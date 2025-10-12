@@ -1,0 +1,42 @@
+.app-navbar {
+    display: flex;
+    justify-content: space-between; /* Espacia el logo, enlaces y acciones */
+    align-items: center;
+    padding: 15px 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none; /* Quita el subrayado */
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #A0522D; /* Marrón Cacao */
+    font-size: 1em;
+    padding: 5px 0;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #794225; /* Tono más oscuro al pasar el mouse */
+}
+
+.login-button {
+    text-decoration: none;
+    color: #F5F5DC; /* Crema Suave para el texto del botón */
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #794225 !important;
+}

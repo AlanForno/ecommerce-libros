@@ -1,0 +1,53 @@
+/* home.component.css */
+
+/* Estilos para el banner principal */
+.hero-section {
+    padding: 80px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: #A0522D; /* Marrón Cacao para el texto */
+    background-color: #F5F5DC; /* Fondo Crema Suave */
+}
+
+.hero-content h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.cta-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    color: white; /* Texto blanco en botón marrón */
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #794225 !important; /* Tono más oscuro al pasar el mouse */
+}
+
+/* Estilos para las tarjetas de funcionalidades */
+.features-section {
+    padding: 50px;
+    text-align: center;
+    background-color: #EEDCB3; /* Fondo Arena Cálida */
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.feature-card {
+    width: 30%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #F5F5DC; /* Fondo Crema Suave */
+    color: #A0522D;
+}
