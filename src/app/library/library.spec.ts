@@ -1,34 +1,33 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LibraryComponent } from './library';
-import { of } from 'rxjs';
-import { LibraryService } from '../services/library.service';
-import { Book } from '../models/book.model';
-
+ 
 describe('LibraryComponent', () => {
   let component: LibraryComponent;
   let fixture: ComponentFixture<LibraryComponent>;
-  let mockLibraryService: any;
-
+ 
   beforeEach(() => {
-    mockLibraryService = {
-      getUserLibrary: jasmine.createSpy().and.returnValue(of([]))
-    };
-
     TestBed.configureTestingModule({
-      declarations: [LibraryComponent],
-      providers: [{ provide: LibraryService, useValue: mockLibraryService }]
+      declarations: [LibraryComponent]
     });
-
+ 
     fixture = TestBed.createComponent(LibraryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
-  it('should create', () => {
+ 
+  it('debe crear el componente correctamente', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should load user library on init', () => {
-    expect(mockLibraryService.getUserLibrary).toHaveBeenCalled();
+ 
+  it('debe tener libros cargados', () => {
+    expect(component.books.length).toBeGreaterThan(0);
+  });
+ 
+  it('los libros deben tener propiedades básicas', () => {
+    const book = component.books[0];
+    expect(book).toHaveProperty('id');
+    expect(book).toHaveProperty('title');
+    expect(book).toHaveProperty('author');
+    expect(book).toHaveProperty('price');
   });
 });
