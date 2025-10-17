@@ -1,0 +1,41 @@
+.cart-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.cart-list {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.book-info {
+  flex-grow: 1;
+}
+
+button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #c0392b;
+}
+
+.cart-summary {
+  margin-top: 20px;
+  text-align: right;
+}
