@@ -6,8 +6,10 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    color: #A0522D; /* Marrón Cacao para el texto */
-    background-color: #F5F5DC; /* Fondo Crema Suave */
+    color: #A0522D;
+    /* Marrón Cacao para el texto */
+    background-color: #F5F5DC;
+    /* Fondo Crema Suave */
 }
 
 .hero-content h1 {
@@ -19,7 +21,8 @@
     padding: 12px 25px;
     border: none;
     border-radius: 5px;
-    color: white; /* Texto blanco en botón marrón */
+    color: white;
+    /* Texto blanco en botón marrón */
     font-weight: bold;
     cursor: pointer;
     margin-top: 20px;
@@ -27,14 +30,16 @@
 }
 
 .cta-button:hover {
-    background-color: #794225 !important; /* Tono más oscuro al pasar el mouse */
+    background-color: var(--color-primario-oscuro) !important;
+    /* Tono más oscuro al pasar el mouse */
 }
 
 /* Estilos para las tarjetas de funcionalidades */
 .features-section {
     padding: 50px;
     text-align: center;
-    background-color: #EEDCB3; /* Fondo Arena Cálida */
+    background-color: #EEDCB3;
+    /* Fondo Arena Cálida */
 }
 
 .card-container {
@@ -48,6 +53,7 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #F5F5DC; /* Fondo Crema Suave */
+    background-color: #F5F5DC;
+    /* Fondo Crema Suave */
     color: #A0522D;
 }
