@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
-import { Libro } from '../shared/interfaces/libro';
+import { Book } from '../shared/interfaces/book';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-book-detail',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './book-detail.html',
   styleUrl: './book-detail.css'
 })
 export class BookDetail {
 
-  public libro: Libro = {
+  public libro: Book = {
+    id: 1,
     titulo: 'Titulo del libro',
     autor: 'Autor del libro',
     editorial: 'Editorial xxxx',
@@ -18,7 +20,7 @@ export class BookDetail {
     paginas: '300 paginas',
     genero: 'Genero del libro',
     anio: 2024,
-    precio: 40.000,
+    precio: 40000.0,
     rutaImagen: 'images/portada-libro.png',
   }
 

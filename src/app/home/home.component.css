@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    color: #A0522D;
+    color: var(--color-primario);
     /* Marrón Cacao para el texto */
     background-color: #F5F5DC;
     /* Fondo Crema Suave */
@@ -17,28 +17,11 @@
     margin-bottom: 10px;
 }
 
-.cta-button {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    /* Texto blanco en botón marrón */
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s;
-}
-
-.cta-button:hover {
-    background-color: var(--color-primario-oscuro) !important;
-    /* Tono más oscuro al pasar el mouse */
-}
-
 /* Estilos para las tarjetas de funcionalidades */
 .features-section {
     padding: 50px;
     text-align: center;
-    background-color: #EEDCB3;
+    background-color: var(--color-secundario);
     /* Fondo Arena Cálida */
 }
 
@@ -55,5 +38,5 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #F5F5DC;
     /* Fondo Crema Suave */
-    color: #A0522D;
+    color: var(--color-primario);
 }

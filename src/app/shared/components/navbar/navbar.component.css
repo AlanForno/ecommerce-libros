@@ -21,7 +21,7 @@
 
 .nav-link {
     text-decoration: none;
-    color: #A0522D;
+    color: var(--color-primario);
     /* Marrón Cacao */
     font-size: 1em;
     padding: 5px 0;

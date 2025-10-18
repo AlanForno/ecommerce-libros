@@ -1,4 +1,5 @@
-export interface Libro {
+export interface Book {
+    id: number;
     titulo: string;
     autor: string;
     editorial: string;
@@ -7,6 +8,16 @@ export interface Libro {
     paginas: string;
     genero: string;
     anio: number;
+    precio: number;
+    rutaImagen: string;
+}
+
+export interface BookPreview {
+    id: number;
+    titulo: string;
+    autor: string;
+    genero: string;
+    formato: string;
     precio: number;
     rutaImagen: string;
 }

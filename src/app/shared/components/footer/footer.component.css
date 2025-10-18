@@ -29,7 +29,7 @@
 .footer-section a,
 .footer-section p {
     text-decoration: none;
-    color: #A0522D;
+    color: var(--color-primario);
     transition: color 0.3s;
 }
 
