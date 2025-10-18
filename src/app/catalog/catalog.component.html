@@ -1,0 +1,69 @@
+<div class="m-3 d-flex gap-3">
+
+    <aside class="filtros">
+        <p class="titulo-seccion fs-3">Busqueda</p>
+
+        <input type="text" class="form-control" placeholder="Buscar por nombre, autor o formato">
+
+        <form>
+            <div class="my-3">
+                <p class="titulo-seccion">Generos</p>
+                <hr>
+
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="">Fantasia</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="">Novela</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="">Tecnologia</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="">Policial</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="rango-precio">
+                <p class="titulo-seccion">Rango de precios</p>
+                <hr>
+
+                <div class="d-flex gap-5 mx-2">
+                    <div>
+                        <label for="minimo" class="mb-1">Minimo</label>
+                        <input type="number" id="minimo" class="form-control" placeholder="$3000">
+                    </div>
+                    <div>
+                        <label for="maximo" class="mb-1">Maximo</label>
+                        <input type="number" id="maximo" class="form-control" placeholder="$20000">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </aside>
+
+    <section class="grid-libros">
+        @for (libro of libros; track $index) {
+        <article class="libro">
+            <div class="informacion" [routerLink]="['/detalle', libro.id]">
+                <img [src]="libro.rutaImagen" class="portada" [alt]="'Portada de ' + libro.titulo">
+                <h3 class="titulo-libro">{{ libro.titulo }}</h3>
+                <h4 class="autor-libro">{{ libro.autor }}</h4>
+
+                <div class="mb-3">
+                    <p class="m-0">{{ libro.genero }}</p>
+                    <strong>{{ libro.formato }}</strong>
+                </div>
+            </div>
+
+            <div class="precio">
+                <b>${{ libro.precio | number }}</b>
+                <button class="cta-button">Agregar al Carrito</button>
+            </div>
+        </article>
+        }
+    </section>
+
+</div>

@@ -5,3 +5,22 @@
     --color-secundario: #EEDCB3;
     --color-secundario-claro: #F5F5DC;
 }
+
+
+.cta-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--color-primario);
+    color: white;
+    /* Texto blanco en botón marrón */
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: var(--color-primario-oscuro) !important;
+    /* Tono más oscuro al pasar el mouse */
+}

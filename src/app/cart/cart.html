@@ -1,8 +1,10 @@
-<div class="cart-container" *ngIf="cartItems.length > 0; else emptyCart">
+@if (cartItems.length > 0) {
+<div class="cart-container">
   <h2>Tu carrito de compras</h2>
 
   <ul class="cart-list">
-    <li *ngFor="let book of cartItems">
+    @for (book of cartItems; track $index) {
+    <li>
       <div class="book-info">
         <h4>{{ book.title }}</h4>
         <p>{{ book.author }}</p>
@@ -10,6 +12,7 @@
       </div>
       <button (click)="removeFromCart(book.id)">Eliminar</button>
     </li>
+    }
   </ul>
 
   <div class="cart-summary">
@@ -17,7 +20,6 @@
     <button (click)="checkout()">Finalizar compra</button>
   </div>
 </div>
-
-<ng-template #emptyCart>
-  <p>Tu carrito está vacío.</p>
-</ng-template>
+} @else {
+<p>Tu carrito está vacío.</p>
+}

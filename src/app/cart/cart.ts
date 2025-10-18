@@ -9,7 +9,7 @@ export class CartComponent implements OnInit {
   cartItems: any[] = [];
   total: number = 0;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.loadCart();

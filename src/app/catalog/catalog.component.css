@@ -1,0 +1,102 @@
+.filtros {
+    width: 30%;
+    padding: 20px 10px;
+    background-color: var(--color-secundario);
+    border-radius: 8px;
+}
+
+.filtros ul li {
+    background-color: transparent;
+    border: none;
+    margin-bottom: 5px;
+    padding: 0;
+}
+
+.filtros ul li a {
+    text-decoration: none;
+    color: var(--color-primario-oscuro);
+}
+
+.filtros .titulo-seccion {
+    font-weight: 700;
+    color: var(--color-primario);
+    font-size: 1.3em;
+}
+
+.portada {
+    width: 10em;
+    object-fit: cover;
+    transition: transform 300ms;
+}
+
+.portada:hover {
+    transform: scale(1.15);
+}
+
+.grid-libros {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+@media screen and (max-width: 1280px) {
+    .grid-libros {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .grid-libros {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .grid-libros {
+        grid-template-columns: 1fr;
+    }
+}
+
+.libro,
+.precio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.libro {
+    padding: 20px 10px;
+    border-radius: 8px;
+}
+.libro:has(.informacion:hover) {
+    background-color: var(--color-secundario);
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.libro .informacion {
+    text-align: center;
+}
+
+.titulo-libro,
+.autor-libro {
+    margin: 0;
+}
+
+.titulo-libro {
+    font-size: 1.2em;
+}
+
+.autor-libro {
+    font-size: 1em;
+}
+
+.autor-libro {
+    font-weight: 400;
+    margin-bottom: 0.4em;
+}
+
+.precio b {
+    color: var(--color-primario-oscuro);
+    font-size: 1.2em;
+}
