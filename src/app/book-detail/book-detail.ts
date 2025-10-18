@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Libro } from '../shared/interfaces/libro';
+import { Book } from '../shared/interfaces/book';
 
 @Component({
   selector: 'app-book-detail',
@@ -9,7 +9,7 @@ import { Libro } from '../shared/interfaces/libro';
 })
 export class BookDetail {
 
-  public libro: Libro = {
+  public libro: Book = {
     titulo: 'Titulo del libro',
     autor: 'Autor del libro',
     editorial: 'Editorial xxxx',
