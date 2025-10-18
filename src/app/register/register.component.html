@@ -1,0 +1,134 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Crear Cuenta</h2>
+    <form class="register-form" (ngSubmit)="onRegister()" #registerForm="ngForm">
+
+      <h3 class="section-title">Datos de Acceso</h3>
+
+      <div class="form-group">
+        <label for="username">Nombre de Usuario <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          [(ngModel)]="username" 
+          #usernameInput="ngModel"
+          required 
+          pattern="^[a-zA-Z0-9_]{3,20}$"
+          placeholder="Ej: usuario123"
+          autocomplete="username">
+        <small class="help-text">3-20 caracteres: letras, números y guiones bajos</small>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo Electrónico <span class="required">*</span></label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          [(ngModel)]="email" 
+          #emailInput="ngModel"
+          required
+          pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+          placeholder="ejemplo@correo.com"
+          autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña <span class="required">*</span></label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          [(ngModel)]="password" 
+          #passwordInput="ngModel"
+          required
+          minlength="8"
+          placeholder="Mínimo 8 caracteres"
+          autocomplete="new-password">
+        <small class="help-text">Debe incluir mayúsculas, minúsculas, números y caracteres especiales</small>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar Contraseña <span class="required">*</span></label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          name="confirmPassword" 
+          [(ngModel)]="confirmPassword" 
+          #confirmPasswordInput="ngModel"
+          required
+          placeholder="Repite tu contraseña"
+          autocomplete="new-password">
+      </div>
+
+      <h3 class="section-title payment-section">Datos de Pago (Opcional)</h3>
+      <p class="section-description">
+        Puedes agregar tu método de pago principal ahora o hacerlo más tarde desde tu perfil.
+      </p>
+
+      <div class="form-group">
+        <label for="cardNumber">Número de Tarjeta</label>
+        <input 
+          type="text" 
+          id="cardNumber" 
+          name="cardNumber" 
+          [(ngModel)]="cardNumber" 
+          (input)="formatCardNumber($event)"
+          placeholder="1234-5678-9012-3456" 
+          maxlength="19"
+          autocomplete="cc-number">
+      </div>
+
+      <div class="row-group">
+        <div class="form-group date-group">
+          <label for="expiryDate">Vencimiento</label>
+          <input 
+            type="text" 
+            id="expiryDate" 
+            name="expiryDate" 
+            [(ngModel)]="expiryDate" 
+            (input)="formatExpiryDate($event)"
+            placeholder="MM/AA" 
+            maxlength="5"
+            autocomplete="cc-exp">
+        </div>
+        <div class="form-group cvv-group">
+          <label for="cvv">CVV</label>
+          <input 
+            type="text" 
+            id="cvv" 
+            name="cvv" 
+            [(ngModel)]="cvv" 
+            (input)="formatCVV($event)"
+            placeholder="123" 
+            maxlength="4"
+            autocomplete="cc-csc">
+        </div>
+      </div>
+
+      @if (errorMessage) {
+        <div class="error-message" role="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          {{ errorMessage }}
+        </div>
+      }
+
+      <button type="submit" class="register-button" [disabled]="!registerForm.form.valid && registerForm.submitted">
+        <span>Crear Cuenta</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </button>
+
+      <p class="login-link">
+        ¿Ya tienes una cuenta? <a href="/login" class="link">Inicia sesión aquí</a>
+      </p>
+    </form>
+  </div>
+</div>

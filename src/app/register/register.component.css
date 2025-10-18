@@ -1,0 +1,124 @@
+/* register-component.css */
+
+/* Fondo principal que usa el color Arena Cálida */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #EEDCB3; /* Arena Cálida */
+}
+
+/* Tarjeta o Contenedor del Formulario que usa el color Crema Suave */
+.register-card {
+    background-color: #F5F5DC; /* Crema Suave */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra suave para destacar */
+    width: 100%;
+    max-width: 400px; /* Ancho máximo para formularios */
+    text-align: center;
+}
+
+/* Título (usa el color Marrón Cacao) */
+.register-card h2 {
+    color: #A0522D; /* Marrón Cacao */
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+/* Estilos de los grupos de formulario */
+.form-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #A0522D; /* Marrón Cacao */
+}
+
+/* Estilos de los campos de entrada (input) */
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #EEDCB3; /* Borde suave de Arena Cálida */
+    border-radius: 5px;
+    box-sizing: border-box; /* Asegura que el padding no cambie el ancho total */
+    background-color: white; /* Fondo del campo en blanco para mejor legibilidad */
+    color: #794225;
+}
+
+/* Foco en el campo (usa el color Marrón Oscuro) */
+.form-group input:focus {
+    border-color: #794225; /* Marrón Oscuro para el foco */
+    outline: none;
+    box-shadow: 0 0 5px rgba(121, 66, 37, 0.5); /* Sombra sutil de foco */
+}
+
+/* Botón de Registro (Misma clase que el CTA de Home) */
+.register-button {
+    /* Mismos estilos base que cta-button */
+    width: 100%;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    color: white; 
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+    /* El color de fondo se define inline en el HTML como #A0522D */
+}
+
+/* Efecto hover (usa el color Marrón Oscuro) */
+.register-button:hover {
+    background-color: #794225 !important; /* Marrón Oscuro */
+}
+
+/* Enlace a Iniciar Sesión */
+.login-link {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #A0522D; /* Texto principal en Marrón Cacao */
+}
+
+.login-link a {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+    color: #794225 !important; /* Marrón Oscuro al hacer hover */
+}
+
+/* Agrega estos estilos al final de tu register-component.css */
+
+.section-title {
+    text-align: left;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #EEDCB3; /* Línea separadora suave */
+    padding-bottom: 5px;
+}
+
+/* Contenedor para agrupar campos en una fila (Vencimiento y CVV) */
+.row-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.date-group, .cvv-group {
+    flex: 1; /* Distribuye el espacio de manera uniforme */
+}
+
+/* Estilo para mensajes de error */
+.error-message {
+    font-size: 0.9em;
+    font-weight: bold;
+}

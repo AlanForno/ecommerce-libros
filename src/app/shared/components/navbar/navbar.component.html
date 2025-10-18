@@ -1,15 +1,26 @@
-<nav class="app-navbar" style="background-color: #EEDCB3;">
-    <div class="logo">
-        <a routerLink="/" class="nav-brand" style="color: var(--color-primario);">Licencias Digitales 📖</a>
-    </div>
-    <div class="nav-links">
-        <a routerLink="/catalogo" class="nav-link">Catálogo</a>
-        <a routerLink="/biblioteca" class="nav-link">Mi Biblioteca</a>
-        <a routerLink="/detalle" class="nav-link">Detalle</a>
-        <a routerLink="/ayuda" class="nav-link">Ayuda</a>
-        <a routerLink="/carrito" class="nav-link">Carrito</a>
-    </div>
-    <div class="user-actions">
-        <a routerLink="/login" class="login-button" style="background-color: var(--color-primario);">Iniciar Sesión</a>
+<nav class="app-navbar">
+    <div class="navbar-container">
+        <div class="logo">
+            <a routerLink="/" class="nav-brand">Licencias Digitales 📖</a>
+        </div>
+
+        <button class="hamburger-menu" (click)="toggleMenu()" [class.active]="isMenuOpen" aria-label="Toggle menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <div class="nav-content" [class.active]="isMenuOpen">
+            <div class="nav-links">
+                <a routerLink="/catalogo" class="nav-link" (click)="closeMenu()">Catálogo</a>
+                <a routerLink="/biblioteca" class="nav-link" (click)="closeMenu()">Mi Biblioteca</a>
+                <a routerLink="/ayuda" class="nav-link" (click)="closeMenu()">Ayuda</a>
+                <a routerLink="/carrito" class="nav-link" (click)="closeMenu()">Carrito</a>
+            </div>
+            <div class="user-actions">
+                <a routerLink="/login" class="login-button" (click)="closeMenu()">Iniciar Sesión</a>
+                <a href="/registro" class="register-button" (click)="closeMenu()">Registro</a>
+            </div>
+        </div>
     </div>
 </nav>

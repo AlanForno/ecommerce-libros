@@ -1,19 +1,50 @@
+/* Navbar principal */
 .app-navbar {
     display: flex;
     justify-content: space-between;
-    /* Espacia el logo, enlaces y acciones */
     align-items: center;
     padding: 15px 40px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 0;
+    z-index: 1000;
+    background-color: #EEDCB3;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Logo */
+.logo {
+    flex-shrink: 0;
 }
 
 .nav-brand {
     font-size: 1.5em;
     font-weight: bold;
     text-decoration: none;
-    /* Quita el subrayado */
+    color: #A0522D;
+    transition: opacity 0.3s ease;
 }
 
+.nav-brand:hover {
+    opacity: 0.8;
+}
+
+/* Contenedor de navegación */
+.nav-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+/* Links de navegación */
 .nav-links {
     display: flex;
     gap: 30px;
@@ -21,27 +52,153 @@
 
 .nav-link {
     text-decoration: none;
-    color: var(--color-primario);
-    /* Marrón Cacao */
+    color: #A0522D;
     font-size: 1em;
     padding: 5px 0;
     transition: color 0.3s;
 }
 
 .nav-link:hover {
-    color: var(--color-primario-oscuro);
-    /* Tono más oscuro al pasar el mouse */
+    color: #794225;
 }
 
-.login-button {
+/* Acciones de usuario */
+.user-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.login-button,
+.register-button {
     text-decoration: none;
     color: #F5F5DC;
-    /* Crema Suave para el texto del botón */
     padding: 8px 15px;
     border-radius: 4px;
     transition: background-color 0.3s;
+    background-color: #A0522D;
 }
 
-.login-button:hover {
-    background-color: var(--color-primario-oscuro) !important;
+.login-button:hover,
+.register-button:hover {
+    background-color: #794225 !important;
+}
+
+/* Menú hamburguesa (oculto por defecto) */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+}
+
+.hamburger-line {
+    width: 25px;
+    height: 3px;
+    background-color: #A0522D;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Animación del menú hamburguesa */
+.hamburger-menu.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* RESPONSIVE - Tablet y móvil */
+@media (max-width: 768px) {
+    .app-navbar {
+        padding: 15px 20px;
+    }
+
+    .hamburger-menu {
+        display: flex;
+    }
+
+    .nav-content {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background-color: #EEDCB3;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 5rem 2rem 2rem;
+        gap: 0;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        overflow-y: auto;
+    }
+
+    .nav-content.active {
+        right: 0;
+    }
+
+    /* Overlay oscuro */
+    .nav-content.active::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 280px;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .nav-link {
+        width: 100%;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(121, 66, 37, 0.1);
+    }
+
+    .user-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .login-button,
+    .register-button {
+        width: 100%;
+        text-align: center;
+        padding: 12px 15px;
+    }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .nav-brand {
+        font-size: 1.2em;
+    }
+
+    .nav-content {
+        width: 100%;
+        right: -100%;
+    }
+
+    .nav-content.active::before {
+        right: 0;
+    }
 }
