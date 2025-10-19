@@ -74,7 +74,6 @@
           id="cardNumber" 
           name="cardNumber" 
           [(ngModel)]="cardNumber" 
-          (input)="formatCardNumber($event)"
           placeholder="1234-5678-9012-3456" 
           maxlength="19"
           autocomplete="cc-number">
@@ -87,8 +86,7 @@
             type="text" 
             id="expiryDate" 
             name="expiryDate" 
-            [(ngModel)]="expiryDate" 
-            (input)="formatExpiryDate($event)"
+            [(ngModel)]="expiryDate"
             placeholder="MM/AA" 
             maxlength="5"
             autocomplete="cc-exp">
@@ -99,8 +97,7 @@
             type="text" 
             id="cvv" 
             name="cvv" 
-            [(ngModel)]="cvv" 
-            (input)="formatCVV($event)"
+            [(ngModel)]="cvv"
             placeholder="123" 
             maxlength="4"
             autocomplete="cc-csc">

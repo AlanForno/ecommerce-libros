@@ -184,30 +184,5 @@ export class RegisterComponent implements OnInit {
     alert('¡Cuenta creada exitosamente!');
     this.router.navigate(['/login']);
   }
-  // Métodos auxiliares para formateo automático (opcional)
-  formatCardNumber(event: any): void {
-    let value = event.target.value.replace(/\D/g, '');
-    if (value.length > 16) {
-      value = value.substring(0, 16);
-    }
-    const formatted = value.match(/.{1,4}/g)?.join('-') || value;
-    this.cardNumber = formatted;
-  }
-
-  formatExpiryDate(event: any): void {
-    let value = event.target.value.replace(/\D/g, '');
-    if (value.length > 4) {
-      value = value.substring(0, 4);
-    }
-    if (value.length >= 2) {
-      this.expiryDate = value.substring(0, 2) + '/' + value.substring(2);
-    } else {
-      this.expiryDate = value;
-    }
-  }
-
-  formatCVV(event: any): void {
-    this.cvv = event.target.value.replace(/\D/g, '');
-  }
 }
 
