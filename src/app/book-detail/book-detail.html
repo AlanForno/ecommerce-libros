@@ -1,40 +1,41 @@
-<div class="container-fluid row py-5 px-4 align-items-start text-light" style="background-color:#F5F5DC ;">
+<div class="container-fluid py-5 px-4 align-items-start text-light pt-5 contenedor-contenido" style="background-color:#F5F5DC;">
+  <div class="row">
+    <section class="col-md-4 text-center mt-5">
+      <h1 class="mb-3 mobile titulo">{{ libro.titulo }}</h1>
+      <h3 class="mb-4 mobile titulo">{{ libro.autor }}</h3>
+      <img class="mt-2 tablet-img" [src]="libro.rutaImagen" alt="Portada del libro" style="max-width: 70%">
+    </section>
 
-  <section class="col-md-4 text-center mt-5">
-    <img class="mt-2" [src]="libro.rutaImagen" alt="Portada del libro" style="max-width: 70%">
-  </section>
-
-  <section class="col-md-8 p-3 mt-2 " style="color: var(--color-primario)">
-    <h1 class="mb-3">{{ libro.titulo }}</h1>
-    <h3 class="mb-4">{{ libro.autor }}</h3>
-    <p class="mt-4 me-4 mb-4">
-      <strong>Descripción:</strong> {{ libro.descripcion }}
-    </p>
-    <hr class="text-secondary me-4 mt-3">
-    <div class="row mt-4">
-      <div class="col-md-6">
-        <p><strong>Formato:</strong> {{ libro.formato }}</p>
-        <p><strong>Editorial:</strong> {{ libro.editorial }}</p>
+    <section class="col-md-8 p-3 mt-2" style="color: var(--color-primario)">
+      <h1 class="mb-3 laptop tablet-title">{{ libro.titulo }}</h1>
+      <h3 class="mb-4 laptop tablet-title">{{ libro.autor }}</h3>
+      <p class="mt-4 me-4 mb-4 descripcion-mobile descripcion-tablet">
+        <strong>Descripción:</strong> {{ libro.descripcion }}
+      </p>
+      <hr class="text-secondary me-4 mt-3">
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <p><strong>Formato:</strong> {{ libro.formato }}</p>
+          <p><strong>Editorial:</strong> {{ libro.editorial }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Páginas:</strong> {{ libro.paginas }}</p>
+          <p><strong>Año:</strong> {{ libro.anio }}</p>
+        </div>
       </div>
-      <div class="col-md-6">
-        <p><strong>Páginas:</strong> {{ libro.paginas }}</p>
-        <p><strong>Año:</strong> {{ libro.anio }}</p>
+      <p class="mt-2">
+        <strong>Género:</strong> {{ libro.genero }}
+      </p>
+      <p class="mt-2">
+        <strong>Precio:</strong> {{ libro.precio | number }}
+      </p>
+
+      <div class="d-flex flex-row gap-4 justify-content-end me-5 contenedor-botones" style="margin-top: 6em;">
+        <button class="btn btn-outline-light" style="background-color: var(--color-primario); color: white;">
+          Agregar al carrito
+        </button>
+        <button class="btn" style="background-color: var(--color-primario); color: white;">Comprar ahora</button>
       </div>
-    </div>
-    <p class="mt-2">
-      <strong>Género: </strong>{{ libro.genero }}
-    </p>
-    <p class="mt-2">
-      <strong>Precio: </strong>{{ libro.precio | number }}
-    </p>
-
-    <div class="d-flex flex-row gap-4 justify-content-end me-5" style="margin-top: 6em;">
-      <button class="btn btn-outline-light" style="background-color: var(--color-primario); color: white;">
-        Agregar al carrito
-      </button>
-      <button class="btn" style="background-color: var(--color-primario); color: white;">Comprar ahora</button>
-    </div>
-
-
-  </section>
+    </section>
+  </div>
 </div>
