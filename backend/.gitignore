@@ -40,3 +40,17 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+/generated/prisma
+
+/src/generated/prisma
+
+/src/generated/prisma
+
+/generated/prisma
+
+/src/generated/prisma
+
+/generated/prisma
+
+/src/generated/prisma
