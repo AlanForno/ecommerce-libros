@@ -41,16 +41,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
+.env
+/src/generated/prisma
 /generated/prisma
-
-/src/generated/prisma
-
-/src/generated/prisma
-
-/generated/prisma
-
-/src/generated/prisma
-
-/generated/prisma
-
-/src/generated/prisma
