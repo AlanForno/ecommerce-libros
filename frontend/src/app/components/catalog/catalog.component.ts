@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Book, BookPreview } from '../shared/interfaces/book';
+import { Book, BookPreview } from '../../shared/interfaces/book';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from "@angular/router";
 

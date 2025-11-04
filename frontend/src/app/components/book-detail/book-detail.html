@@ -1,33 +1,36 @@
 <div class="container-fluid py-5 px-4 align-items-start text-light pt-5 contenedor-contenido" style="background-color:#F5F5DC;">
   <div class="row">
     <section class="col-md-4 text-center mt-5">
-      <h1 class="mb-3 mobile titulo">{{ libro.titulo }}</h1>
-      <h3 class="mb-4 mobile titulo">{{ libro.autor }}</h3>
-      <img class="mt-2 tablet-img" [src]="libro.rutaImagen" alt="Portada del libro" style="max-width: 70%">
+      <h1 class="mb-3 mobile titulo">{{ book.titulo }}</h1>
+      <h3 class="mb-4 mobile titulo">{{ book.autor }}</h3>
+      <img class="mt-2 tablet-img" [src]="book.rutaImagen" alt="Portada del libro" style="max-width: 70%">
     </section>
 
     <section class="col-md-8 p-3 mt-2" style="color: var(--color-primario)">
-      <h1 class="mb-3 laptop tablet-title">{{ libro.titulo }}</h1>
-      <h3 class="mb-4 laptop tablet-title">{{ libro.autor }}</h3>
+      <h1 class="mb-3 laptop tablet-title">{{ book.titulo }}</h1>
+      <h3 class="mb-4 laptop tablet-title">{{ book.autor }}</h3>
       <p class="mt-4 me-4 mb-4 descripcion-mobile descripcion-tablet">
-        <strong>Descripción:</strong> {{ libro.descripcion }}
+        <strong>Descripción:</strong> {{ book.descripcion }}
       </p>
       <hr class="text-secondary me-4 mt-3">
       <div class="row mt-4">
         <div class="col-md-6">
-          <p><strong>Formato:</strong> {{ libro.formato }}</p>
-          <p><strong>Editorial:</strong> {{ libro.editorial }}</p>
+          <p><strong>Formato:</strong> {{ book.formato }}</p>
+          <p><strong>Editorial:</strong> {{ book.editorial }}</p>
         </div>
         <div class="col-md-6">
-          <p><strong>Páginas:</strong> {{ libro.paginas }}</p>
-          <p><strong>Año:</strong> {{ libro.anio }}</p>
+          <p><strong>Páginas:</strong> {{ book.paginas }}</p>
+          <p><strong>Año:</strong> {{ book.anio }}</p>
         </div>
       </div>
       <p class="mt-2">
-        <strong>Género:</strong> {{ libro.genero }}
+        <strong>Género:</strong> {{ book.genero }}
+      </p>
+       <p class="mt-2">
+        <strong>Calificacion:</strong> {{ book.calificacion | number }}
       </p>
       <p class="mt-2">
-        <strong>Precio:</strong> {{ libro.precio | number }}
+        <strong>Precio:</strong> {{ book.precio | number }}
       </p>
 
       <div class="d-flex flex-row gap-4 justify-content-end me-5 contenedor-botones" style="margin-top: 6em;">
