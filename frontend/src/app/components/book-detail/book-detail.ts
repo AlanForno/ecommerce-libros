@@ -28,7 +28,6 @@ export class BookDetail implements OnInit, OnDestroy {
     this.bookService.getBookDetail(this.id).subscribe({
       next: (book:Book) =>{
         this.book= book;
-
       },
       error: () =>{},
       complete: () =>{}

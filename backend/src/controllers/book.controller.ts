@@ -1,7 +1,10 @@
 import type { Request, Response } from "express";
 import { BookService } from "../services/book.service.js";
+import { BookRepository } from "../repositories/book.repository.js";
 
-const bookService = new BookService();
+
+const bookRepository = new BookRepository();
+const bookService = new BookService(bookRepository);
 
 export class BookController {
 private booksList = [
@@ -118,28 +121,9 @@ private booksList = [
     calificacion: 4.7
   }
 ];
-  public async getBook(request: Request, response: Response) {
-    try {
-      const id = Number(request.params.id);
 
-      if (isNaN(id)) {
-        return response.status(400).json("ID inválido");
-      }
 
-      const book = this.booksList.find((libro) => libro.id === id);
-
-      if (!book) {
-        return response.status(404).json({ mensaje: "Libro no encontrado" });
-      }
-
-      return response.status(200).json(book);
-
-    } catch (err) {
-      response.status(500).json({ mensaje: err });
-    }
-  }
-
-  /*
+  
   public async getBook(request: Request, response: Response){
     try{
       const id = Number(request.params.id);
@@ -150,12 +134,18 @@ private booksList = [
       
         const book = await bookService.findBook(id);
 
+        if(!book){
+          return response.status(404).json("Libro no encontrado");
+        }
+
+        response.status(200).json(book);
+
     }catch (err) {
       response.status(500).json({ mensaje: err });
 
     }
   }
-    */
+    
 
   public async getBooks(request: Request, response: Response) {
     try {

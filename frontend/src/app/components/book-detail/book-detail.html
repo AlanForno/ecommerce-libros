@@ -3,7 +3,7 @@
     <section class="col-md-4 text-center mt-5">
       <h1 class="mb-3 mobile titulo">{{ book.titulo }}</h1>
       <h3 class="mb-4 mobile titulo">{{ book.autor }}</h3>
-      <img class="mt-2 tablet-img" [src]="book.rutaImagen" alt="Portada del libro" style="max-width: 70%">
+      <img class="mt-2 tablet-img" [src]="book.ruta_imagen" alt="Portada del libro" style="max-width: 70%">
     </section>
 
     <section class="col-md-8 p-3 mt-2" style="color: var(--color-primario)">
@@ -27,7 +27,7 @@
         <strong>Género:</strong> {{ book.genero }}
       </p>
        <p class="mt-2">
-        <strong>Calificacion:</strong> {{ book.calificacion | number }}
+        <strong>Valoracion:</strong> {{ book.valoracion | number }}
       </p>
       <p class="mt-2">
         <strong>Precio:</strong> {{ book.precio | number }}
