@@ -9,8 +9,8 @@ export interface Book {
     genero: string;
     anio: number;
     precio: number;
-    calificacion:number
-    rutaImagen: string;
+    valoracion:number
+    ruta_imagen: string;
 }
 
 export interface BookPreview {
