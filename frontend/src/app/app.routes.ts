@@ -7,6 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 import { BookDetail } from './components/book-detail/book-detail';
 import { CartComponent } from './components/cart/cart';
 import { CatalogComponent } from './components/catalog/catalog.component';
+import { LibraryComponent } from './components/library/library';
 
 
 export const routes: Routes = [
@@ -15,10 +16,10 @@ export const routes: Routes = [
     component: HomeComponent
   },
   { path: 'registro',
-    component: RegisterComponent 
+    component: RegisterComponent
   },
   { path: 'login',
-    component: LoginComponent 
+    component: LoginComponent
   },
   {
     path: 'detalle/:id',
@@ -31,6 +32,9 @@ export const routes: Routes = [
   {
     path: 'catalogo',
     component: CatalogComponent
+  },
+  { path: 'biblioteca',
+    component: LibraryComponent
   },
   {
     path: '**',
