@@ -1,15 +1,15 @@
 import type { BookRepository } from "../repositories/book.repository.js";
 
 export class BookService {
-
-    constructor(private bookRepository : BookRepository){}
-
     
-    async findBook(id:number){
+    constructor(private bookRepository: BookRepository) { }
+    
+    async findBook(id: number) {
         return await this.bookRepository.findBookById(id)
     }
-        
 
-    
+    async getAllBooks() {
+        return await this.bookRepository.getAllBooks();
+    }
 
 }

@@ -48,7 +48,7 @@
         @for (libro of libros; track $index) {
         <article class="libro">
             <div class="informacion" [routerLink]="['/detalle', libro.id]">
-                <img [src]="libro.rutaImagen" class="portada" [alt]="'Portada de ' + libro.titulo">
+                <img [src]="libro.ruta_imagen" class="portada" [alt]="'Portada de ' + libro.titulo">
                 <h3 class="titulo-libro">{{ libro.titulo }}</h3>
                 <h4 class="autor-libro">{{ libro.autor }}</h4>
 
