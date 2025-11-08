@@ -15,4 +15,8 @@ export class BooksService {
   getBookDetail(id:number):Observable<Book>{
     return this.http.get<Book>(`${enviroments.api_url}/book/book-detail/${id}`)
   }
+
+  getAllBooksPreviews():Observable<Book[]>{
+    return this.http.get<Book[]>(`${enviroments.api_url}/book/previews`)
+  }
 }
