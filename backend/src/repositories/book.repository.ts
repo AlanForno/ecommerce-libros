@@ -8,19 +8,29 @@ export class BookRepository {
   }
 
   async findAllBooksPreviews(filtros: any) {
-    const { busqueda, precioMinimo, precioMaximo } = filtros;
+   
+    const { busqueda, precioMinimo, precioMaximo, genero } = filtros;
 
     let condiciones: any = {};
-    if (busqueda) condiciones = {
-      ...condiciones,
-      OR: [
-        { titulo: { contains: filtros.busqueda, mode: 'insensitive' } },
-        { autor: { contains: filtros.busqueda, mode: 'insensitive' } }
-      ]
-    };
-    if (precioMinimo) condiciones = { ...condiciones, precio: { gte: precioMinimo } };
-    if (precioMaximo) condiciones = { ...condiciones, precio: { lte: precioMaximo } };
 
+    if (busqueda)
+      condiciones = {
+        ...condiciones,
+        OR: [
+          { titulo: { contains: filtros.busqueda, mode: "insensitive" } },
+          { autor: { contains: filtros.busqueda, mode: "insensitive" } },
+        ],
+      };
+
+    if (precioMinimo || precioMaximo) {
+      condiciones.precio = {};
+      if (precioMinimo) condiciones.precio.gte = Number(precioMinimo);
+      if (precioMaximo) condiciones.precio.lte = Number(precioMaximo);
+    }
+
+    if (genero) {
+      condiciones.genero = { equals: genero, mode: "insensitive" };
+    }
 
     return await prisma.book.findMany({
       select: {
@@ -32,7 +42,8 @@ export class BookRepository {
         precio: true,
         ruta_imagen: true,
       },
-      where: condiciones
+      where: condiciones,
     });
   }
 }
+
