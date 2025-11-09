@@ -32,7 +32,16 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void { }
   ngOnInit(): void {
-    this.getCatalog();
+    const filtrosAlmacenados = localStorage.getItem('filtros_catalogo');
+
+    if (filtrosAlmacenados) {
+      const filtros = JSON.parse(filtrosAlmacenados);
+      this.filtros.patchValue(filtros);
+      this.aplicarFiltros();
+    } else {
+      this.getCatalog();
+    }
+
   }
 
   getCatalog() {
@@ -56,7 +65,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
     this.bookService.getAllBooksPreviews(filtros)
       .subscribe({
-        next: (books) => this.books = books,
+        next: (books) => {
+          this.books = books
+          localStorage.setItem('filtros_catalogo', JSON.stringify(filtros));
+        },
         error: (err) => console.error('Error al encontrar libros: ', err)
       });
   }

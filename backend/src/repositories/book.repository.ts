@@ -21,7 +21,6 @@ export class BookRepository {
     if (precioMinimo) condiciones = { ...condiciones, precio: { gte: precioMinimo } };
     if (precioMaximo) condiciones = { ...condiciones, precio: { lte: precioMaximo } };
 
-
     return await prisma.book.findMany({
       select: {
         id: true,

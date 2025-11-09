@@ -15,4 +15,9 @@ export class AuthService {
     //login(user: any): Observable<any> {
       //return this.httpClient.post("http://localhost:3000/login", user);
         //}
+
+  cerrarSesion(): void {
+    localStorage.clear();
+  }
+
 }
