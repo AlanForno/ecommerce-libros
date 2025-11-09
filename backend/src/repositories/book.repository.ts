@@ -7,31 +7,39 @@ export class BookRepository {
     });
   }
 
-  async findAllBooksPreviews(filtros: any) {
-   
+  async findAllBooksPreviews(filtros: {
+    busqueda?: string;
+    precioMinimo?: number;
+    precioMaximo?: number;
+    genero?: string;
+  }) {
     const { busqueda, precioMinimo, precioMaximo, genero } = filtros;
+    const condiciones: any = {};
 
-    let condiciones: any = {};
+    // 🔹 Filtro por búsqueda (titulo o autor)
+    if (busqueda) {
+      condiciones.OR = [
+        { titulo: { contains: busqueda, mode: "insensitive" } },
+        { autor: { contains: busqueda, mode: "insensitive" } },
+      ];
+    }
 
-    if (busqueda)
-      condiciones = {
-        ...condiciones,
-        OR: [
-          { titulo: { contains: filtros.busqueda, mode: "insensitive" } },
-          { autor: { contains: filtros.busqueda, mode: "insensitive" } },
-        ],
-      };
-
+    // 🔹 Filtro por rango de precio
     if (precioMinimo || precioMaximo) {
       condiciones.precio = {};
       if (precioMinimo) condiciones.precio.gte = Number(precioMinimo);
       if (precioMaximo) condiciones.precio.lte = Number(precioMaximo);
     }
 
-    if (genero) {
-      condiciones.genero = { equals: genero, mode: "insensitive" };
+    // 🔹 Filtro por género (acá estaba el problema)
+    if (genero && genero.trim() !== "") {
+      condiciones.genero = {
+        contains: genero,
+        mode: "insensitive",
+      };
     }
 
+    // 🔹 Consulta final Prisma
     return await prisma.book.findMany({
       select: {
         id: true,
@@ -46,4 +54,3 @@ export class BookRepository {
     });
   }
 }
-

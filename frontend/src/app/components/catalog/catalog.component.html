@@ -2,7 +2,7 @@
   <aside class="filtros">
     <p class="titulo-seccion fs-3">Búsqueda</p>
 
-    <form [formGroup]="filtros" (ngSubmit)="buscarLibros()">
+    <form [formGroup]="filtros">
       <input
         type="text"
         formControlName="busqueda"
@@ -13,18 +13,17 @@
       <div class="my-3">
         <p class="titulo-seccion">Géneros</p>
         <hr />
-      
         <ul class="list-group">
-          <li class="list-group-item" *ngFor="let gen of generos">
-            <a href="#" (click)="filtrarPorGenero(gen)">{{ gen }}</a>
-          </li>
+          <li class="list-group-item"><a href="#" (click)="filtrarPorGenero('Fantasia', $event)">Fantasía</a></li>
+          <li class="list-group-item"><a href="#" (click)="filtrarPorGenero('Novela', $event)">Novela</a></li>
+          <li class="list-group-item"><a href="#" (click)="filtrarPorGenero('Tecnologia', $event)">Tecnología</a></li>
+          <li class="list-group-item"><a href="#" (click)="filtrarPorGenero('Policial', $event)">Policial</a></li>
         </ul>
       </div>
 
       <div class="rango-precio">
         <p class="titulo-seccion">Rango de precios</p>
         <hr />
-
         <div class="d-flex gap-5 mx-2">
           <div>
             <label for="minimo" class="mb-1">Mínimo</label>
@@ -48,46 +47,26 @@
           </div>
         </div>
       </div>
-
-      <button type="submit" class="btn btn-primary w-100 mt-3">Buscar</button>
     </form>
   </aside>
 
-  <section class="flex-grow-1">
-    @if (errorMessage) {
-    <div class="row">
-      <div class="col-12 col-md-8 col-lg-6 mx-auto">
-        <div class="alert alert-danger text-center my-3" role="alert">
-          <strong>Error:</strong> {{ errorMessage }}
-        </div>
-      </div>
-    </div>
-    }
-  </section>
-
   <section class="grid-libros">
     @for (book of books; track $index) {
-    <article class="libro">
-      <div class="informacion" [routerLink]="['/detalle', book.id]">
-        <img
-          [src]="book.ruta_imagen"
-          class="portada"
-          [alt]="'Portada de ' + book.titulo"
-        />
-        <h3 class="titulo-libro">{{ book.titulo }}</h3>
-        <h4 class="autor-libro">{{ book.autor }}</h4>
-
-        <div class="mb-3">
-          <p class="m-0">{{ book.genero }}</p>
-          <strong>{{ book.formato }}</strong>
+      <article class="libro">
+        <div class="informacion" [routerLink]="['/detalle', book.id]">
+          <img [src]="book.ruta_imagen" class="portada" [alt]="'Portada de ' + book.titulo" />
+          <h3 class="titulo-libro">{{ book.titulo }}</h3>
+          <h4 class="autor-libro">{{ book.autor }}</h4>
+          <div class="mb-3">
+            <p class="m-0">{{ book.genero }}</p>
+            <strong>{{ book.formato }}</strong>
+          </div>
         </div>
-      </div>
-
-      <div class="precio">
-        <b>${{ book.precio | number }}</b>
-        <button class="cta-button">Agregar al Carrito</button>
-      </div>
-    </article>
+        <div class="precio">
+          <b>${{ book.precio | number }}</b>
+          <button class="cta-button">Agregar al Carrito</button>
+        </div>
+      </article>
     }
   </section>
 </div>
