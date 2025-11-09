@@ -33,7 +33,13 @@ export class BookController {
 
   public async getBooksPreview(request: Request, response: Response) {
     try {
-      const books = await bookService.findAllBooksPreviews();
+      const filtros = {
+        busqueda: request.query.busqueda,
+        precioMinimo: request.query.precioMinimo,
+        precioMaximo: request.query.precioMaximo,
+      };
+      
+      const books = await bookService.findAllBooksPreviews(filtros);
       response.status(200).json(books);
     } catch (err) {
       response.status(500).json({ mensaje: err });
