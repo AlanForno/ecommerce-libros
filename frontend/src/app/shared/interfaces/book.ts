@@ -20,5 +20,5 @@ export interface BookPreview {
     genero: string;
     formato: string;
     precio: number;
-    rutaImagen: string;
+    ruta_imagen: string;
 }

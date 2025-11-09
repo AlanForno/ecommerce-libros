@@ -7,7 +7,21 @@ export class BookRepository {
     });
   }
 
-  async findAllBooksPreviews() {
+  async findAllBooksPreviews(filtros: any) {
+    const { busqueda, precioMinimo, precioMaximo } = filtros;
+
+    let condiciones: any = {};
+    if (busqueda) condiciones = {
+      ...condiciones,
+      OR: [
+        { titulo: { contains: filtros.busqueda, mode: 'insensitive' } },
+        { autor: { contains: filtros.busqueda, mode: 'insensitive' } }
+      ]
+    };
+    if (precioMinimo) condiciones = { ...condiciones, precio: { gte: precioMinimo } };
+    if (precioMaximo) condiciones = { ...condiciones, precio: { lte: precioMaximo } };
+
+
     return await prisma.book.findMany({
       select: {
         id: true,
@@ -18,6 +32,7 @@ export class BookRepository {
         precio: true,
         ruta_imagen: true,
       },
+      where: condiciones
     });
   }
 }

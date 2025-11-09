@@ -8,12 +8,8 @@ export class BookService {
         return await this.bookRepository.findBookById(id);
     }
 
-    async findAllBooksPreviews(){
-        return await this.bookRepository.findAllBooksPreviews();
-
+    async findAllBooksPreviews(filtros?: any){
+        return await this.bookRepository.findAllBooksPreviews(filtros);
     }
-        
-
-    
 
 }
