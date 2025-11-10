@@ -12,7 +12,7 @@ export class BookController {
         busqueda: request.query.busqueda,
         precioMinimo: request.query.precioMinimo,
         precioMaximo: request.query.precioMaximo,
-        genero: request.query.genero, // mantiene el parámetro
+        genero: request.query.genero,
       };
 
       const books = await bookService.findAllBooksPreviews(filtros);

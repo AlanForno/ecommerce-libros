@@ -21,7 +21,6 @@ export class BooksService {
     if (filtros?.busqueda) params = params.set('busqueda', filtros.busqueda);
     if (filtros?.precioMinimo) params = params.set('precioMinimo', filtros.precioMinimo);
     if (filtros?.precioMaximo) params = params.set('precioMaximo', filtros.precioMaximo);
-    // 🔑 AGREGADO: Única línea necesaria para habilitar el envío del filtro 'genero'.
     if (filtros?.genero) params = params.set('genero', filtros.genero);
 
     return this.http.get<BookPreview[]>(`${enviroments.api_url}/book/previews`, { params });

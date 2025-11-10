@@ -22,7 +22,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
       busqueda: [''],
       precioMinimo: [''],
       precioMaximo: [''],
-      genero: [''] // 🔹 agregado
+      genero: ['']
     });
 
     this.filtros.valueChanges.subscribe(() => this.aplicarFiltros());
@@ -40,18 +40,30 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
-  private aplicarFiltros(): void {
+private aplicarFiltros(): void {
     const filtros = this.filtros.value;
-    console.log("🚀 Filtros enviados al backend:", filtros);
-    this.bookService.getAllBooksPreviews(filtros).subscribe({
+    console.log("🚀 Filtros del formulario (antes de limpiar):", filtros);
+
+    const filtrosValidos = Object.fromEntries(
+        Object.entries(filtros).filter(([_, v]) => v !== null && v !== '')
+    );
+    console.log("✅ Filtros Válidos enviados al backend:", filtrosValidos); // Para debug
+
+    this.bookService.getAllBooksPreviews(filtrosValidos).subscribe({ // Usar filtrosValidos
       next: (books) => this.books = books,
       error: (err) => console.error('Error al encontrar libros: ', err)
     });
   }
 
-  filtrarPorGenero(genero: string, event: Event): void {
-    event.preventDefault();
-    this.filtros.patchValue({ genero }); // actualiza el form
-    this.aplicarFiltros(); // ejecuta el mismo flujo de búsqueda
+  seleccionarGenero(genero: string): void {
+
+    const generoActual = this.filtros.get('genero')?.value;
+
+    if (generoActual === genero) {
+        this.filtros.patchValue({ genero: null });
+    } else {
+        this.filtros.patchValue({ genero });
+    }
+    this.aplicarFiltros();
   }
 }
