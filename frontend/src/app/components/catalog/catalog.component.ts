@@ -13,7 +13,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
 })
 export class CatalogComponent implements OnInit, OnDestroy {
   bookService = inject(BooksService);
-  books!: BookPreview[];
+  books: BookPreview[] = [];
   errorMessage: string = '';
   filtros: FormGroup;
 
@@ -29,41 +29,37 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getCatalog();
+    this.aplicarFiltros(); // Cargar catálogo (con o sin filtros)
   }
+
   ngOnDestroy(): void {}
 
-  getCatalog() {
-    this.bookService.getAllBooksPreviews().subscribe({
-      next: (book) => this.books = book,
-      error: () => this.errorMessage = 'No se pudo cargar el catálogo.'
-    });
-  }
-
-private aplicarFiltros(): void {
+  private aplicarFiltros(): void {
     const filtros = this.filtros.value;
-    console.log("🚀 Filtros del formulario (antes de limpiar):", filtros);
+    console.log("Filtros enviados al backend:", filtros);
 
-    const filtrosValidos = Object.fromEntries(
-        Object.entries(filtros).filter(([_, v]) => v !== null && v !== '')
-    );
-    console.log("✅ Filtros Válidos enviados al backend:", filtrosValidos); // Para debug
-
-    this.bookService.getAllBooksPreviews(filtrosValidos).subscribe({ // Usar filtrosValidos
-      next: (books) => this.books = books,
-      error: (err) => console.error('Error al encontrar libros: ', err)
+    this.bookService.getAllBooksPreviews(filtros).subscribe({
+      next: (books) => {
+        console.log("Libros recibidos:", books);
+        this.books = books;
+        this.errorMessage = ''; // Limpiar error si todo sale bien
+      },
+      error: (err) => {
+        console.error('Error al cargar libros:', err);
+        this.errorMessage = 'No se pudieron cargar los libros.';
+        this.books = []; // Limpiar libros en caso de error
+      }
     });
   }
 
   seleccionarGenero(genero: string): void {
-
     const generoActual = this.filtros.get('genero')?.value;
 
     if (generoActual === genero) {
-        this.filtros.patchValue({ genero: null });
+      this.filtros.patchValue({ genero: '' }); // Desactivar filtro
     } else {
-        this.filtros.patchValue({ genero });
+      this.filtros.patchValue({ genero }); // Activar filtro
     }
-    this.aplicarFiltros();
+    // No hace falta llamar aplicarFiltros() porque valueChanges ya lo hace
   }
 }
