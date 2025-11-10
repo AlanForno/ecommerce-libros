@@ -1,10 +1,9 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Book, BookPreview } from '../../shared/interfaces/book';
+import { BookPreview } from '../../shared/interfaces/book';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BooksService } from '../../api/services/books.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { debounceTime, filter } from 'rxjs';
 
 @Component({
   selector: 'app-catalog',
@@ -14,23 +13,21 @@ import { debounceTime, filter } from 'rxjs';
 })
 export class CatalogComponent implements OnInit, OnDestroy {
   bookService = inject(BooksService);
-  books!: BookPreview[];
-  error = false;
+  books: BookPreview[] = [];
   errorMessage: string = '';
   filtros: FormGroup;
-
 
   constructor(private fb: FormBuilder) {
     this.filtros = this.fb.group({
       busqueda: [''],
       precioMinimo: [''],
-      precioMaximo: ['']
+      precioMaximo: [''],
+      genero: ['']
     });
 
     this.filtros.valueChanges.subscribe(() => this.aplicarFiltros());
   }
 
-  ngOnDestroy(): void { }
   ngOnInit(): void {
     const filtrosAlmacenados = localStorage.getItem('filtros_catalogo');
 
@@ -44,24 +41,26 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   }
 
+  ngOnDestroy(): void {}
+
   getCatalog() {
     this.bookService.getAllBooksPreviews().subscribe({
-      next: (book) => {
-        this.books = book;
+      next: (books) => {
+        console.log("Catálogo completo recibido:", books);
+        console.log("Primer libro:", books[0]);
+        this.books = books;
+        this.errorMessage = '';
       },
-      error: () => {
-        this.errorMessage = 'No se pudo cargar el catálogo. Por favor, intente nuevamente.';
-      },
-      complete: () => { },
+      error: (err) => {
+        console.error('Error:', err);
+        this.errorMessage = 'No se pudo cargar el catálogo.';
+      }
     });
   }
 
   private aplicarFiltros(): void {
-    const filtros = {
-      busqueda: this.filtros.get('busqueda')?.value,
-      precioMinimo: this.filtros.get('precioMinimo')?.value,
-      precioMaximo: this.filtros.get('precioMaximo')?.value,
-    };
+    const filtros = this.filtros.value;
+
 
     this.bookService.getAllBooksPreviews(filtros)
       .subscribe({
@@ -71,7 +70,39 @@ export class CatalogComponent implements OnInit, OnDestroy {
         },
         error: (err) => console.error('Error al encontrar libros: ', err)
       });
+/*
+    const hayFiltros = filtros.busqueda || filtros.genero || filtros.precioMinimo || filtros.precioMaximo;
+
+    if (!hayFiltros) {
+      this.getCatalog();
+      return;
+    }
+
+    console.log("Aplicando filtros:", filtros);
+
+    this.bookService.getAllBooksPreviews(filtros).subscribe({
+      next: (books) => {
+        console.log("Libros filtrados:", books);
+        this.books = books;
+        this.errorMessage = '';
+      },
+      error: (err) => {
+        console.error('Error al filtrar:', err);
+        this.errorMessage = 'No se pudieron cargar los libros.';
+      }
+    });
+    >>>>>>> origin/filtros-karencilla
+    */
+
   }
 
+  seleccionarGenero(genero: string): void {
+    const generoActual = this.filtros.get('genero')?.value;
 
+    if (generoActual === genero) {
+      this.filtros.patchValue({ genero: '' });
+    } else {
+      this.filtros.patchValue({ genero });
+    }
+  }
 }

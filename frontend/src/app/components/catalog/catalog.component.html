@@ -11,17 +11,25 @@
                 <hr />
 
                 <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="">Fantasia</a>
+                    <li class="list-group-item"
+                        [ngClass]="{'active': filtros.get('genero')?.value === 'Fantasia'}"
+                        (click)="seleccionarGenero('Fantasia')">
+                        <a href="javascript:void(0)">Fantasia</a>
                     </li>
-                    <li class="list-group-item">
-                        <a href="">Novela</a>
+                    <li class="list-group-item"
+                        [ngClass]="{'active': filtros.get('genero')?.value === 'Novela'}"
+                        (click)="seleccionarGenero('Novela')">
+                        <a href="javascript:void(0)">Novela</a>
                     </li>
-                    <li class="list-group-item">
-                        <a href="">Tecnologia</a>
+                    <li class="list-group-item"
+                        [ngClass]="{'active': filtros.get('genero')?.value === 'Tecnologia'}"
+                        (click)="seleccionarGenero('Tecnologia')">
+                        <a href="javascript:void(0)">Tecnologia</a>
                     </li>
-                    <li class="list-group-item">
-                        <a href="">Policial</a>
+                    <li class="list-group-item"
+                        [ngClass]="{'active': filtros.get('genero')?.value === 'Policial'}"
+                        (click)="seleccionarGenero('Policial')">
+                        <a href="javascript:void(0)">Policial</a>
                     </li>
                 </ul>
             </div>
@@ -48,34 +56,35 @@
 
     <section class="flex-grow-1">
         @if (errorMessage) {
-        <div class="row">
-            <div class="col-12 col-md-8 col-lg-6 mx-auto">
-                <div class="alert alert-danger text-center my-3" role="alert">
-                    <strong>Error:</strong> {{ errorMessage }}
-                </div>
+            <div class="alert alert-danger text-center my-3" role="alert">
+                <strong>Error:</strong> {{ errorMessage }}
             </div>
+        }
+
+        <div class="grid-libros">
+            @if (books.length === 0 && !errorMessage) {
+                <p class="text-center">No se encontraron libros</p>
+            }
+
+            @for (book of books; track book.id) {
+                <article class="libro">
+                    <div class="informacion" [routerLink]="['/detalle', book.id]">
+                        <img [src]="book.ruta_imagen" class="portada" [alt]="'Portada de ' + book.titulo" />
+                        <h3 class="titulo-libro">{{ book.titulo }}</h3>
+                        <h4 class="autor-libro">{{ book.autor }}</h4>
+
+                        <div class="mb-3">
+                            <p class="m-0">{{ book.genero }}</p>
+                            <strong>{{ book.formato }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="precio">
+                        <b>${{ book.precio | number }}</b>
+                        <button class="cta-button">Agregar al Carrito</button>
+                    </div>
+                </article>
+            }
         </div>
-        }
-    </section>
-    <section class="grid-libros">
-        @for (book of books; track $index) {
-        <article class="libro">
-            <div class="informacion" [routerLink]="['/detalle', book.id]">
-                <img [src]="book.ruta_imagen" class="portada" [alt]="'Portada de ' + book.titulo" />
-                <h3 class="titulo-libro">{{ book.titulo }}</h3>
-                <h4 class="autor-libro">{{ book.autor }}</h4>
-
-                <div class="mb-3">
-                    <p class="m-0">{{ book.genero }}</p>
-                    <strong>{{ book.formato }}</strong>
-                </div>
-            </div>
-
-            <div class="precio">
-                <b>${{ book.precio | number }}</b>
-                <button class="cta-button">Agregar al Carrito</button>
-            </div>
-        </article>
-        }
     </section>
 </div>
