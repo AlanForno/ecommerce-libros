@@ -11,16 +11,6 @@
                 <hr />
 
                 <ul class="list-group">
-<div class="m-3 d-flex gap-3">
-    <aside class="filtros">
-        <p class="titulo-seccion fs-3">Busqueda</p>
-
-        <form [formGroup]="filtros">
-            <div class="my-3">
-                <p class="titulo-seccion">Generos</p>
-                <hr />
-
-                <ul class="list-group">
                     <li class="list-group-item"
                         [ngClass]="{'active': filtros.get('genero')?.value === 'Fantasia'}"
                         (click)="seleccionarGenero('Fantasia')">
