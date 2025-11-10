@@ -32,6 +32,10 @@ export class BookRepository {
     return await prisma.book.findMany({
       select: {
         id: true,
+        titulo: true,
+        autor: true,
+        genero: true,
+        formato: true,
         precio: true,
         ruta_imagen: true,
       },

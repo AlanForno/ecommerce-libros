@@ -29,25 +29,47 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.aplicarFiltros(); // Cargar catálogo (con o sin filtros)
+    this.getCatalog();
   }
 
   ngOnDestroy(): void {}
 
+  getCatalog() {
+    this.bookService.getAllBooksPreviews().subscribe({
+      next: (books) => {
+        console.log("Catálogo completo recibido:", books);
+        console.log("Primer libro:", books[0]);
+        this.books = books;
+        this.errorMessage = '';
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.errorMessage = 'No se pudo cargar el catálogo.';
+      }
+    });
+  }
+
   private aplicarFiltros(): void {
     const filtros = this.filtros.value;
-    console.log("Filtros enviados al backend:", filtros);
+
+    const hayFiltros = filtros.busqueda || filtros.genero || filtros.precioMinimo || filtros.precioMaximo;
+
+    if (!hayFiltros) {
+      this.getCatalog();
+      return;
+    }
+
+    console.log("Aplicando filtros:", filtros);
 
     this.bookService.getAllBooksPreviews(filtros).subscribe({
       next: (books) => {
-        console.log("Libros recibidos:", books);
+        console.log("Libros filtrados:", books);
         this.books = books;
-        this.errorMessage = ''; // Limpiar error si todo sale bien
+        this.errorMessage = '';
       },
       error: (err) => {
-        console.error('Error al cargar libros:', err);
+        console.error('Error al filtrar:', err);
         this.errorMessage = 'No se pudieron cargar los libros.';
-        this.books = []; // Limpiar libros en caso de error
       }
     });
   }
@@ -56,10 +78,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
     const generoActual = this.filtros.get('genero')?.value;
 
     if (generoActual === genero) {
-      this.filtros.patchValue({ genero: '' }); // Desactivar filtro
+      this.filtros.patchValue({ genero: '' });
     } else {
-      this.filtros.patchValue({ genero }); // Activar filtro
+      this.filtros.patchValue({ genero });
     }
-    // No hace falta llamar aplicarFiltros() porque valueChanges ya lo hace
   }
 }
