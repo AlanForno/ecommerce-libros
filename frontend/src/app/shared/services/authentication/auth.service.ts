@@ -15,10 +15,16 @@ export class AuthService {
     return this.httpClient.post(`${BASE_URL}/register`, user);
   }
 
+
   login(user: any, pass: any): Observable<any> {
     return this.httpClient.post(`${BASE_URL}/login`, {
     username: user,
     password: pass
   });
   }
+
+  cerrarSesion(): void {
+    localStorage.clear();
+  }
+
 }

@@ -1,89 +1,125 @@
-import { Component } from '@angular/core';
-import { Book, BookPreview } from '../../shared/interfaces/book';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { BookPreview } from '../../shared/interfaces/book';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from "@angular/router";
+import { RouterLink } from '@angular/router';
+import { BooksService } from '../../api/services/books.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-catalog',
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.css',
-  imports: [CommonModule, RouterLink]
+  imports: [CommonModule, RouterLink, ReactiveFormsModule],
 })
-export class CatalogComponent {
+export class CatalogComponent implements OnInit, OnDestroy {
+  bookService = inject(BooksService);
+  books: BookPreview[] = [];
+  errorMessage: string = '';
+  filtros: FormGroup;
+  filtrosPantallaGenero: string = '';
 
-  public libros: BookPreview[] = [
-    {
-      id: 1,
-      titulo: 'Cien Años de Soledad',
-      autor: 'Gabriel García Márquez',
-      genero: 'Realismo Mágico',
-      formato: 'Físico',
-      precio: 25000.99,
-      rutaImagen: 'images/portada-libro.png'
-    },
-    {
-      id: 2,
-      titulo: '1984',
-      autor: 'George Orwell',
-      genero: 'Distopía',
-      formato: 'EPUB',
-      precio: 15000.50,
-      rutaImagen: 'images/portada-libro.png'
-    },
-    {
-      id: 3,
-      titulo: 'El Principito',
-      autor: 'Antoine de Saint-Exupéry',
-      genero: 'Infantil',
-      formato: 'EPUB',
-      precio: 12000.75,
-      rutaImagen: 'images/portada-libro.png'
-    },
-    {
-      id: 4,
-      titulo: 'Orgullo y Prejuicio',
-      autor: 'Jane Austen',
-      genero: 'Romance',
-      formato: 'Físico',
-      precio: 18000.00,
-      rutaImagen: 'images/portada-libro.png'
-    },
-    {
-      id: 5,
-      titulo: 'El Hobbit',
-      autor: 'J.R.R. Tolkien',
-      genero: 'Fantasía',
-      formato: 'EPUB',
-      precio: 22000.30,
-      rutaImagen: 'images/portada-libro.png'
-    },
-    {
-      id: 6,
-      titulo: 'Don Quijote de la Mancha',
-      autor: 'Miguel de Cervantes',
-      genero: 'Clásico',
-      formato: 'Físico',
-      precio: 30000.00,
-      rutaImagen: 'images/portada-libro.png'
-    },
-    {
-      id: 7,
-      titulo: 'La Sombra del Viento',
-      autor: 'Carlos Ruiz Zafón',
-      genero: 'Misterio',
-      formato: 'EPUB',
-      precio: 20000.50,
-      rutaImagen: 'images/portada-libro.png'
-    },
-    {
-      id: 8,
-      titulo: 'Harry Potter y la Piedra Filosofal',
-      autor: 'J.K. Rowling',
-      genero: 'Fantasía',
-      formato: 'EPUB',
-      precio: 19000.99,
-      rutaImagen: 'images/portada-libro.png'
+  constructor(private fb: FormBuilder) {
+    this.filtros = this.fb.group({
+      busqueda: [''],
+      precioMinimo: [''],
+      precioMaximo: [''],
+      genero: [''],
+    });
+
+    this.filtros.valueChanges.subscribe(() => this.aplicarFiltros());
+  }
+
+  ngOnInit(): void {
+    const filtrosAlmacenados = localStorage.getItem('filtros_catalogo');
+
+    if (filtrosAlmacenados) {
+      const filtros = JSON.parse(filtrosAlmacenados);
+      this.filtros.patchValue(filtros);
+      this.aplicarFiltros();
+    } else {
+      this.getCatalog();
     }
-  ];
+  }
 
+  ngOnDestroy(): void {}
+
+  getCatalog() {
+    this.bookService.getAllBooksPreviews().subscribe({
+      next: (books) => {
+        console.log('Catálogo completo recibido:', books);
+        console.log('Primer libro:', books[0]);
+        this.books = books;
+        this.errorMessage = '';
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.errorMessage = 'No se pudo cargar el catálogo.';
+      },
+    });
+  }
+
+  private aplicarFiltros(): void {
+    const filtros = this.filtros.value;
+
+    const hayFiltros =
+      filtros.busqueda || filtros.genero || filtros.precioMinimo || filtros.precioMaximo;
+
+    if (!hayFiltros) {
+      console.log('No hay filtros, cargando catálogo completo.');
+      this.getCatalog();
+      localStorage.removeItem('filtros_catalogo');
+      return;
+    }
+
+    console.log('Aplicando filtros:', filtros);
+    this.bookService.getAllBooksPreviews(filtros).subscribe({
+      next: (books) => {
+        console.log('Libros filtrados:', books);
+        this.books = books;
+        this.errorMessage = '';
+        localStorage.setItem('filtros_catalogo', JSON.stringify(filtros));
+      },
+      error: (err) => {
+        console.error('Error al filtrar:', err);
+        this.errorMessage = 'No se pudieron cargar los libros.';
+      },
+    });
+  }
+
+  seleccionarGenero(genero: string): void {
+    const generoActual = this.filtros.get('genero')?.value;
+
+    if (generoActual === genero) {
+      this.filtros.patchValue({ genero: '' });
+    } else {
+      this.filtros.patchValue({ genero });
+    }
+  }
+
+  get generoValor(): string {
+    return this.filtros.get('genero')?.value || '';
+  }
+
+  get precioValor(): string {
+    const min = this.filtros.get('precioMinimo')?.value;
+    const max = this.filtros.get('precioMaximo')?.value;
+
+    if (min && max) return `$${min} - $${max}`;
+    if (min) return `Desde $${min}`;
+    if (max) return `Hasta $${max}`;
+    return '';
+  }
+
+ limpiarFiltroPrecio() {
+  this.filtros.patchValue({
+    precioMinimo: '',
+    precioMaximo: ''  
+  });
+}
+
+  limpiarFiltroGenero() {
+    this.filtros.patchValue({
+      genero: '',
+    });
+  }
 }
