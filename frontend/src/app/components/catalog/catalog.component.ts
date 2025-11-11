@@ -1,10 +1,9 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Book, BookPreview } from '../../shared/interfaces/book';
+import { BookPreview } from '../../shared/interfaces/book';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BooksService } from '../../api/services/books.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { debounceTime, filter } from 'rxjs';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-catalog',
@@ -14,23 +13,22 @@ import { debounceTime, filter } from 'rxjs';
 })
 export class CatalogComponent implements OnInit, OnDestroy {
   bookService = inject(BooksService);
-  books!: BookPreview[];
-  error = false;
+  books: BookPreview[] = [];
   errorMessage: string = '';
   filtros: FormGroup;
-
+  filtrosPantallaGenero: string = '';
 
   constructor(private fb: FormBuilder) {
     this.filtros = this.fb.group({
       busqueda: [''],
       precioMinimo: [''],
-      precioMaximo: ['']
+      precioMaximo: [''],
+      genero: [''],
     });
 
     this.filtros.valueChanges.subscribe(() => this.aplicarFiltros());
   }
 
-  ngOnDestroy(): void { }
   ngOnInit(): void {
     const filtrosAlmacenados = localStorage.getItem('filtros_catalogo');
 
@@ -41,37 +39,87 @@ export class CatalogComponent implements OnInit, OnDestroy {
     } else {
       this.getCatalog();
     }
-
   }
+
+  ngOnDestroy(): void {}
 
   getCatalog() {
     this.bookService.getAllBooksPreviews().subscribe({
-      next: (book) => {
-        this.books = book;
+      next: (books) => {
+        console.log('Catálogo completo recibido:', books);
+        console.log('Primer libro:', books[0]);
+        this.books = books;
+        this.errorMessage = '';
       },
-      error: () => {
-        this.errorMessage = 'No se pudo cargar el catálogo. Por favor, intente nuevamente.';
+      error: (err) => {
+        console.error('Error:', err);
+        this.errorMessage = 'No se pudo cargar el catálogo.';
       },
-      complete: () => { },
     });
   }
 
   private aplicarFiltros(): void {
-    const filtros = {
-      busqueda: this.filtros.get('busqueda')?.value,
-      precioMinimo: this.filtros.get('precioMinimo')?.value,
-      precioMaximo: this.filtros.get('precioMaximo')?.value,
-    };
+    const filtros = this.filtros.value;
 
-    this.bookService.getAllBooksPreviews(filtros)
-      .subscribe({
-        next: (books) => {
-          this.books = books
-          localStorage.setItem('filtros_catalogo', JSON.stringify(filtros));
-        },
-        error: (err) => console.error('Error al encontrar libros: ', err)
-      });
+    const hayFiltros =
+      filtros.busqueda || filtros.genero || filtros.precioMinimo || filtros.precioMaximo;
+
+    if (!hayFiltros) {
+      console.log('No hay filtros, cargando catálogo completo.');
+      this.getCatalog();
+      localStorage.removeItem('filtros_catalogo');
+      return;
+    }
+
+    console.log('Aplicando filtros:', filtros);
+    this.bookService.getAllBooksPreviews(filtros).subscribe({
+      next: (books) => {
+        console.log('Libros filtrados:', books);
+        this.books = books;
+        this.errorMessage = '';
+        localStorage.setItem('filtros_catalogo', JSON.stringify(filtros));
+      },
+      error: (err) => {
+        console.error('Error al filtrar:', err);
+        this.errorMessage = 'No se pudieron cargar los libros.';
+      },
+    });
   }
 
+  seleccionarGenero(genero: string): void {
+    const generoActual = this.filtros.get('genero')?.value;
 
+    if (generoActual === genero) {
+      this.filtros.patchValue({ genero: '' });
+    } else {
+      this.filtros.patchValue({ genero });
+    }
+  }
+
+  get generoValor(): string {
+    return this.filtros.get('genero')?.value || '';
+  }
+
+  get precioValor(): string {
+    const min = this.filtros.get('precioMinimo')?.value;
+    const max = this.filtros.get('precioMaximo')?.value;
+
+    if (min && max) return `$${min} - $${max}`;
+    if (min) return `Desde $${min}`;
+    if (max) return `Hasta $${max}`;
+    return '';
+  }
+
+ limpiarFiltroPrecio() {
+  this.filtros.patchValue({
+    precioMinimo: '',
+    precioMaximo: ''  
+  });
+}
+
+  limpiarFiltroGenero() {
+    this.filtros.patchValue({
+      genero: '',
+    });
+  }
 }
