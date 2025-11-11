@@ -24,20 +24,20 @@ model book {
 }
 
 model cart {
-  id       Int    @id @default(autoincrement())
+  id       Int  @id @default(autoincrement())
   userId   Int
   bookId   Int
-  quantity Int    @default(1)
-  book     book   @relation(fields: [bookId], references: [id])
-  user     user   @relation(fields: [userId], references: [id])
+  quantity Int  @default(1)
+  book     book @relation(fields: [bookId], references: [id])
+  user     user @relation(fields: [userId], references: [id])
 
   @@unique([userId, bookId])
 }
 
 model user {
-  id       Int     @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   nombre   String
-  email    String  @unique
+  email    String @unique
   password String
   cart     cart[]
 }

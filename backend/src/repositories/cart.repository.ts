@@ -1,5 +1,5 @@
 import { prisma } from "../prisma.js";
-import type { Book } from "../../shared/interfaces/book.js";
+import type { book as Book, cart as Cart } from "@prisma/client";
 
 export interface CartItem {
   book: Book;
