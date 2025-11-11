@@ -3,6 +3,7 @@ import { BookPreview } from '../../shared/interfaces/book';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BooksService } from '../../api/services/books.service';
+import { CartService } from '../../api/services/cart.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -13,6 +14,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class CatalogComponent implements OnInit, OnDestroy {
   bookService = inject(BooksService);
+  cartService = inject(CartService);
+
   books: BookPreview[] = [];
   errorMessage: string = '';
   filtros: FormGroup;
@@ -113,13 +116,25 @@ export class CatalogComponent implements OnInit, OnDestroy {
  limpiarFiltroPrecio() {
   this.filtros.patchValue({
     precioMinimo: '',
-    precioMaximo: ''  
+    precioMaximo: ''
   });
 }
 
   limpiarFiltroGenero() {
     this.filtros.patchValue({
       genero: '',
+    });
+  }
+
+  addToCart(book: BookPreview): void {
+    this.cartService.addToCart(book.id).subscribe({
+      next: () => {
+        alert(`${book.titulo} agregado al carrito`);
+      },
+      error: (err) => {
+        console.error(err);
+        alert('No se pudo agregar el libro al carrito');
+      }
     });
   }
 }

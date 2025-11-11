@@ -134,7 +134,7 @@
 
         <div class="precio">
           <b>${{ book.precio | number }}</b>
-          <button class="cta-button">Agregar al Carrito</button>
+          <button class="cta-button" (click)="addToCart(book)">Agregar al Carrito</button>
         </div>
       </article>
       }
