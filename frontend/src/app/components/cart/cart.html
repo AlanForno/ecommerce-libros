@@ -1,25 +1,25 @@
 @if (cartItems.length > 0) {
-<div class="cart-container">
-  <h2>Tu carrito de compras</h2>
+  <div class="cart-container">
+    <h2>Tu carrito de compras</h2>
 
-  <ul class="cart-list">
-    @for (book of cartItems; track $index) {
-    <li>
-      <div class="book-info">
-        <h4>{{ book.title }}</h4>
-        <p>{{ book.author }}</p>
-        <span>${{ book.price }}</span>
-      </div>
-      <button (click)="removeFromCart(book.id)">Eliminar</button>
-    </li>
-    }
-  </ul>
+    <ul class="cart-list">
+      @for (book of cartItems; track book.id) {
+        <li>
+          <div class="book-info">
+            <h4>{{ book.title }}</h4>
+            <p>{{ book.author }}</p>
+            <span>${{ book.price }}</span>
+          </div>
+          <button (click)="removeFromCart(book.id)">Eliminar</button>
+        </li>
+      }
+    </ul>
 
-  <div class="cart-summary">
-    <p>Total: <strong>${{ total }}</strong></p>
-    <button (click)="checkout()">Finalizar compra</button>
+    <div class="cart-summary">
+      <p>Total: <strong>${{ total }}</strong></p>
+      <button (click)="checkout()">Finalizar compra</button>
+    </div>
   </div>
-</div>
 } @else {
-<p>Tu carrito está vacío.</p>
+  <p>Tu carrito está vacío.</p>
 }
