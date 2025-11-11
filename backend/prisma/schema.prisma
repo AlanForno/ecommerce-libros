@@ -22,8 +22,14 @@ model book {
   valoracion    Decimal? @db.Decimal(2, 1)
 }
 
-model usuario {
-  id        Int     @id @default(autoincrement())
-  nombre    String  @db.VarChar(100)
-  apellido  String  @db.VarChar(100)
+model User {
+  id             Int      @id @default(autoincrement())
+  username       String   @unique @db.VarChar(20)
+  email          String   @unique @db.VarChar(255)
+  password       String   @db.VarChar(255)
+  hasCreditCard  Boolean  @default(false)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt       @map("updated_at")
+
+  @@map("users")
 }

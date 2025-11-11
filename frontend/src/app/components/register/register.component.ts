@@ -159,6 +159,7 @@ export class RegisterComponent implements OnInit {
       username: this.username,
       email: this.email,
       password: this.password,
+      confirmPassword: this.confirmPassword,
       ...(this.cardNumber && {
         paymentInfo: {
           cardNumber: this.cardNumber,
@@ -170,18 +171,16 @@ export class RegisterComponent implements OnInit {
 
     console.log('Datos de registro:', registrationData);
 
-    // this.authService.register(registrationData).subscribe({
-    //   next: (response) => {
-    //     console.log('Registro exitoso', response);
-    //     this.router.navigate(['/login']);
-    //   },
-    //   error: (error) => {
-    //     this.errorMessage = error.message || 'Error al crear la cuenta';
-    //   }
-    // });
+    this.authService.register(registrationData).subscribe({
+       next: (response: any) => {
+         console.log('Registro exitoso', response);
+         this.router.navigate(['/login']);
+    },
+       error: (error: { message: string; }) => {
+         this.errorMessage = error.message || 'Error al crear la cuenta';
+       }
+     });
 
-    // Por ahora, simular éxito
-    alert('¡Cuenta creada exitosamente!');
     this.router.navigate(['/login']);
   }
 }
