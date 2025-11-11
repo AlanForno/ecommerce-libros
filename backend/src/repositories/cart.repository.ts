@@ -7,30 +7,40 @@ export interface CartItem {
 }
 
 export class CartRepository {
-  async findCartByUserId(userId: number) {
-    return await prisma.cart.findMany({
+  async findCartByUserId(userId: number): Promise<CartItem[]> {
+    const items = await prisma.cart.findMany({
       where: { userId },
-      include: {
-        book: true,
-      },
+      include: { book: true },
     });
+
+    return items.map(item => ({
+      book: item.book,
+      quantity: item.quantity,
+    }));
   }
 
-  async addBookToCart(userId: number, bookId: number, quantity: number = 1) {
+  async addBookToCart(userId: number, bookId: number, quantity: number = 1): Promise<CartItem> {
     const existingItem = await prisma.cart.findFirst({
       where: { userId, bookId },
+      include: { book: true },
     });
 
     if (existingItem) {
-      return await prisma.cart.update({
+      const updated = await prisma.cart.update({
         where: { id: existingItem.id },
         data: { quantity: existingItem.quantity + quantity },
+        include: { book: true },
       });
+
+      return { book: updated.book, quantity: updated.quantity };
     }
 
-    return await prisma.cart.create({
+    const created = await prisma.cart.create({
       data: { userId, bookId, quantity },
+      include: { book: true },
     });
+
+    return { book: created.book, quantity: created.quantity };
   }
 
   async removeBookFromCart(userId: number, bookId: number) {

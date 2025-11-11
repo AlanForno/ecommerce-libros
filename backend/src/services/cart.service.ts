@@ -1,7 +1,7 @@
 import type { CartRepository, CartItem } from "../repositories/cart.repository.js";
 
 export class CartService {
-  constructor(private cartRepository: CartRepository) {}
+  constructor(private readonly cartRepository: CartRepository) {}
 
   async getCart(userId: number): Promise<CartItem[]> {
     return await this.cartRepository.findCartByUserId(userId);
