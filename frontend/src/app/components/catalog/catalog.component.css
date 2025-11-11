@@ -1,3 +1,11 @@
+.tag-busqueda {
+    font-family: inherit; 
+    font-size: 1.15em;
+    color: var(--color-primario);
+    text-decoration: none;
+    font-weight: 600;
+}
+
 .filtros {
     width: 30%;
     padding: 20px 10px;

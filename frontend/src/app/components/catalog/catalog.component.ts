@@ -3,7 +3,7 @@ import { BookPreview } from '../../shared/interfaces/book';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BooksService } from '../../api/services/books.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-catalog',
@@ -16,13 +16,14 @@ export class CatalogComponent implements OnInit, OnDestroy {
   books: BookPreview[] = [];
   errorMessage: string = '';
   filtros: FormGroup;
+  filtrosPantallaGenero: string = '';
 
   constructor(private fb: FormBuilder) {
     this.filtros = this.fb.group({
       busqueda: [''],
       precioMinimo: [''],
       precioMaximo: [''],
-      genero: ['']
+      genero: [''],
     });
 
     this.filtros.valueChanges.subscribe(() => this.aplicarFiltros());
@@ -38,7 +39,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
     } else {
       this.getCatalog();
     }
-
   }
 
   ngOnDestroy(): void {}
@@ -46,54 +46,44 @@ export class CatalogComponent implements OnInit, OnDestroy {
   getCatalog() {
     this.bookService.getAllBooksPreviews().subscribe({
       next: (books) => {
-        console.log("Catálogo completo recibido:", books);
-        console.log("Primer libro:", books[0]);
+        console.log('Catálogo completo recibido:', books);
+        console.log('Primer libro:', books[0]);
         this.books = books;
         this.errorMessage = '';
       },
       error: (err) => {
         console.error('Error:', err);
         this.errorMessage = 'No se pudo cargar el catálogo.';
-      }
+      },
     });
   }
 
   private aplicarFiltros(): void {
     const filtros = this.filtros.value;
 
-
-    this.bookService.getAllBooksPreviews(filtros)
-      .subscribe({
-        next: (books) => {
-          this.books = books
-          localStorage.setItem('filtros_catalogo', JSON.stringify(filtros));
-        },
-        error: (err) => console.error('Error al encontrar libros: ', err)
-      });
-/*
-    const hayFiltros = filtros.busqueda || filtros.genero || filtros.precioMinimo || filtros.precioMaximo;
+    const hayFiltros =
+      filtros.busqueda || filtros.genero || filtros.precioMinimo || filtros.precioMaximo;
 
     if (!hayFiltros) {
+      console.log('No hay filtros, cargando catálogo completo.');
       this.getCatalog();
+      localStorage.removeItem('filtros_catalogo');
       return;
     }
 
-    console.log("Aplicando filtros:", filtros);
-
+    console.log('Aplicando filtros:', filtros);
     this.bookService.getAllBooksPreviews(filtros).subscribe({
       next: (books) => {
-        console.log("Libros filtrados:", books);
+        console.log('Libros filtrados:', books);
         this.books = books;
         this.errorMessage = '';
+        localStorage.setItem('filtros_catalogo', JSON.stringify(filtros));
       },
       error: (err) => {
         console.error('Error al filtrar:', err);
         this.errorMessage = 'No se pudieron cargar los libros.';
-      }
+      },
     });
-    >>>>>>> origin/filtros-karencilla
-    */
-
   }
 
   seleccionarGenero(genero: string): void {
@@ -104,5 +94,32 @@ export class CatalogComponent implements OnInit, OnDestroy {
     } else {
       this.filtros.patchValue({ genero });
     }
+  }
+
+  get generoValor(): string {
+    return this.filtros.get('genero')?.value || '';
+  }
+
+  get precioValor(): string {
+    const min = this.filtros.get('precioMinimo')?.value;
+    const max = this.filtros.get('precioMaximo')?.value;
+
+    if (min && max) return `$${min} - $${max}`;
+    if (min) return `Desde $${min}`;
+    if (max) return `Hasta $${max}`;
+    return '';
+  }
+
+ limpiarFiltroPrecio() {
+  this.filtros.patchValue({
+    precioMinimo: '',
+    precioMaximo: ''  
+  });
+}
+
+  limpiarFiltroGenero() {
+    this.filtros.patchValue({
+      genero: '',
+    });
   }
 }
