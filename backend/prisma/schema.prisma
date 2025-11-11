@@ -21,3 +21,12 @@ model book {
   ruta_imagen String?  @db.VarChar(200)
   valoracion  Decimal? @db.Decimal(2, 1)
 }
+model usuario {
+  id        Int     @id @default(autoincrement())
+  nombre    String  @db.VarChar(100)
+  apellido  String  @db.VarChar(100)
+  email     String  @unique @db.VarChar(150)
+  password  String  @db.VarChar(200)
+  rol       String  @db.VarChar(50)
+  creadoEn  DateTime @default(now())
+}
