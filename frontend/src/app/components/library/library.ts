@@ -1,23 +1,49 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'app-library',
-  standalone: true, 
+  standalone: true,
   templateUrl: './library.html',
   styleUrls: ['./library.css'],
-  imports: [CommonModule] 
+  imports: [CommonModule]
 })
-export class LibraryComponent {
-  books = [
-    { id: '1', title: 'Libro 1', author: 'Autor 1', price: 10 },
-    { id: '2', title: 'Libro 2', author: 'Autor 2', price: 15 },
-    { id: '3', title: 'Libro 3', author: 'Autor 3', price: 20 }
-  ];
- 
-  loading = false;           
-  error: string | null = null; 
-  constructor() {
-    console.log('Biblioteca cargada');
+export class LibraryComponent implements OnInit {
+
+  private http = inject(HttpClient);
+  baseUrl = 'http://localhost:3000/api/library';
+
+  books: any[] = [];
+  loading = false;
+  error: string | null = null;
+
+  // Suponemos que tenés el usuario logueado en localStorage
+  usuarioId = localStorage.getItem('usuarioId');
+
+  ngOnInit(): void {
+    this.cargarBiblioteca();
+  }
+
+  cargarBiblioteca(): void {
+    if (!this.usuarioId) {
+      this.error = 'No hay usuario logueado';
+      return;
+    }
+
+    this.loading = true;
+    this.error = null;
+
+    this.http.get<any[]>(`${this.baseUrl}/user/${this.usuarioId}`).subscribe({
+      next: (res) => {
+        this.books = res;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.error = 'Error al cargar la biblioteca';
+        this.loading = false;
+      }
+    });
   }
 }
- 

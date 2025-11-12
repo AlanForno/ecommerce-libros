@@ -113,7 +113,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
  limpiarFiltroPrecio() {
   this.filtros.patchValue({
     precioMinimo: '',
-    precioMaximo: ''  
+    precioMaximo: ''
   });
 }
 

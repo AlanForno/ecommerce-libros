@@ -20,13 +20,29 @@ model book {
   precio      Decimal? @db.Decimal(10, 2)
   ruta_imagen String?  @db.VarChar(200)
   valoracion  Decimal? @db.Decimal(2, 1)
+
+  library Library[]   // 🔹 relación inversa
 }
+
 model usuario {
-  id        Int     @id @default(autoincrement())
-  nombre    String  @db.VarChar(100)
-  apellido  String  @db.VarChar(100)
-  email     String  @unique @db.VarChar(150)
-  password  String  @db.VarChar(200)
-  rol       String  @db.VarChar(50)
+  id        Int      @id @default(autoincrement())
+  nombre    String   @db.VarChar(100)
+  apellido  String   @db.VarChar(100)
+  email     String   @unique @db.VarChar(150)
+  password  String   @db.VarChar(200)
+  rol       String   @db.VarChar(50)
   creadoEn  DateTime @default(now())
+
+  library Library[]   // 🔹 relación inversa
+}
+
+model Library {
+  id        Int      @id @default(autoincrement())
+  usuario   usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  book      book     @relation(fields: [bookId], references: [id])
+  bookId    Int
+  fecha     DateTime @default(now())
+
+  @@unique([usuarioId, bookId])
 }
