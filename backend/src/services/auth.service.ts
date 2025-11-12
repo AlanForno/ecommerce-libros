@@ -1,7 +1,7 @@
 
 import { UserRepository } from "../repositories/user.repository.js";
 import type { RegisterBodyDto, LoginBodyDto } from '../dtos/auth.dtos.js';
-import type { User } from "@prisma/client/edge";
+import type { User } from "@prisma/client";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { boolean } from "zod";
