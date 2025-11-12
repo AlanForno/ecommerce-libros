@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import type { Request, Response } from 'express'; // <--- ¡Asegúrate de cambiar esto!
-import { prisma } from '../prisma.js'; // O '../prisma.ts'
+import type { Request, Response } from 'express'; 
+import { prisma } from '../prisma.js'; 
 import bcrypt from 'bcryptjs';
 
 const router = Router();
 
-// Registro de usuario
 router.post('/register', async (req: Request, res: Response) => {
   const { nombre, apellido, email, password } = req.body;
   if (!nombre || !apellido || !email || !password) {
@@ -27,7 +26,6 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 });
 
-// Login de usuario
 router.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
   if (!email || !password) {

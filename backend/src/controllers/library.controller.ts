@@ -1,15 +1,9 @@
-// backend/src/controllers/library.controller.ts
-
-// 1. CLAVE: Usamos 'import type' para Request y Response (consistente con el TSCONFIG estricto)
 import type { Request, Response } from 'express'; 
-import { prisma } from '../prisma.js'; // CLAVE: Usamos '../prisma' (sube a src) y extensión .ts por la estructura.
+import { prisma } from '../prisma.js'; 
 
 export class LibraryController {
-    // 📚 LECTURA: Obtener todos los libros de un usuario
-    // 2. CLAVE: Tipamos explícitamente req y res para evitar el error 'implicitly has an 'any' type'.
     public async getLibraryByUser(req: Request, res: Response): Promise<Response> {
         
-        // 3. CLAVE: Validación y tipado para req.params.id (que puede ser string | undefined)
         const userIdParam = req.params.id;
         
         if (!userIdParam) {
@@ -23,8 +17,6 @@ export class LibraryController {
         }
         
         try {
-            // 4. CLAVE: Corregida la consulta. Debe ser prisma.user.findUnique
-            // para usar la relación 'library' y no prisma.library.findMany
             const userWithLibrary = await prisma.usuario.findUnique({
                 where: { id: usuarioId },
                 include: { 
@@ -38,7 +30,6 @@ export class LibraryController {
                 return res.status(404).json({ error: 'Usuario no encontrado.' });
             }
 
-            // Mapeamos para devolver solo los objetos Book, resolviendo el error de tipado en 'entry'
             const books = userWithLibrary.library.map(entry => entry.book);
 
             return res.json({ books });
@@ -49,12 +40,12 @@ export class LibraryController {
         }
     }
 
-    // 🛒 PERSISTENCIA: Añadir un libro a la biblioteca (simulando una compra)
+   
     public async addBookToLibrary(req: Request, res: Response): Promise<Response> {
-        // ... (el resto del código de addBookToLibrary es correcto, solo asegúrate de tipar req y res)
+
         const { userId, bookId } = req.body; 
         
-        // ... (validaciones y lógica de Prisma)
+      
         const numericUserId = parseInt(userId, 10);
         const numericBookId = parseInt(bookId, 10);
 

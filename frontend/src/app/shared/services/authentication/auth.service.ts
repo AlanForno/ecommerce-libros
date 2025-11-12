@@ -35,10 +35,9 @@ export class AuthService {
     const u = localStorage.getItem('usuario');
     return u ? JSON.parse(u) : null;
   }
-  // Nuevo método: Obtiene solo el ID del usuario logueado
 getUsuarioId(): number | null {
   const usuario = this.getUsuario();
-  // El ID que tu backend espera es un número
+
   return usuario ? usuario.id : null;
 }
 }

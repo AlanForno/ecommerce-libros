@@ -8,41 +8,39 @@ datasource db {
 }
 
 model book {
-  id          Int      @id @default(autoincrement())
-  titulo      String?  @db.VarChar(200)
-  autor       String?  @db.VarChar(180)
-  editorial   String?  @db.VarChar(180)
+  id          Int       @id @default(autoincrement())
+  titulo      String?   @db.VarChar(200)
+  autor       String?   @db.VarChar(180)
+  editorial   String?   @db.VarChar(180)
   descripcion String?
-  formato     String?  @db.VarChar(80)
+  formato     String?   @db.VarChar(80)
   paginas     Int?
-  anio        String?  @db.VarChar(4)
-  genero      String?  @db.VarChar(100)
-  precio      Decimal? @db.Decimal(10, 2)
-  ruta_imagen String?  @db.VarChar(200)
-  valoracion  Decimal? @db.Decimal(2, 1)
-
-  library Library[]   // 🔹 relación inversa
+  anio        String?   @db.VarChar(4)
+  genero      String?   @db.VarChar(100)
+  precio      Decimal?  @db.Decimal(10, 2)
+  ruta_imagen String?   @db.VarChar(200)
+  valoracion  Decimal?  @db.Decimal(2, 1)
+  library     Library[]
 }
 
 model usuario {
-  id        Int      @id @default(autoincrement())
-  nombre    String   @db.VarChar(100)
-  apellido  String   @db.VarChar(100)
-  email     String   @unique @db.VarChar(150)
-  password  String   @db.VarChar(200)
-  rol       String   @db.VarChar(50)
-  creadoEn  DateTime @default(now())
-
-  library Library[]   // 🔹 relación inversa
+  id       Int       @id @default(autoincrement())
+  nombre   String    @db.VarChar(100)
+  apellido String    @db.VarChar(100)
+  email    String    @unique @db.VarChar(150)
+  password String    @db.VarChar(200)
+  rol      String    @db.VarChar(50)
+  creadoEn DateTime  @default(now())
+  library  Library[]
 }
 
 model Library {
   id        Int      @id @default(autoincrement())
-  usuario   usuario  @relation(fields: [usuarioId], references: [id])
   usuarioId Int
-  book      book     @relation(fields: [bookId], references: [id])
   bookId    Int
   fecha     DateTime @default(now())
+  book      book     @relation(fields: [bookId], references: [id])
+  usuario   usuario  @relation(fields: [usuarioId], references: [id])
 
   @@unique([usuarioId, bookId])
 }

@@ -1,7 +1,4 @@
-// backend/src/routes/library.routes.ts
-
 import { Router } from 'express';
-// ¡CLAVE! Corregir la ruta a subir un solo nivel
 import { LibraryController } from '../controllers/library.controller.js'; 
 
 const libraryRouter = Router();
