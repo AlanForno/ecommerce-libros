@@ -5,13 +5,12 @@ import { AuthService } from '../../shared/services/authentication/auth.service';
 
 @Component({
   selector: 'app-register',
-  imports:[FormsModule],
+  imports: [FormsModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit {
-
- // Datos de acceso
+  // Datos de acceso
   username: string = '';
   email: string = '';
   password: string = '';
@@ -27,7 +26,8 @@ export class RegisterComponent implements OnInit {
   // Expresiones regulares
   private readonly EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   private readonly USERNAME_REGEX = /^[a-zA-Z0-9_]{3,20}$/;
-  private readonly PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  private readonly PASSWORD_REGEX =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   private readonly CARD_NUMBER_REGEX = /^\d{4}-\d{4}-\d{4}-\d{4}$/;
   private readonly EXPIRY_DATE_REGEX = /^(0[1-9]|1[0-2])\/\d{2}$/;
   private readonly CVV_REGEX = /^\d{3,4}$/;
@@ -53,14 +53,14 @@ export class RegisterComponent implements OnInit {
   }
 
   private validateAccessData(): boolean {
-
     if (!this.username.trim()) {
       this.errorMessage = 'El nombre de usuario es obligatorio';
       return false;
     }
 
     if (!this.USERNAME_REGEX.test(this.username)) {
-      this.errorMessage = 'El nombre de usuario debe tener entre 3 y 20 caracteres y solo puede contener letras, números y guiones bajos';
+      this.errorMessage =
+        'El nombre de usuario debe tener entre 3 y 20 caracteres y solo puede contener letras, números y guiones bajos';
       return false;
     }
 
@@ -80,7 +80,8 @@ export class RegisterComponent implements OnInit {
     }
 
     if (!this.PASSWORD_REGEX.test(this.password)) {
-      this.errorMessage = 'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales';
+      this.errorMessage =
+        'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales';
       return false;
     }
 
@@ -100,7 +101,7 @@ export class RegisterComponent implements OnInit {
   private validatePaymentData(): boolean {
     // Si no se proporcionaron datos de pago, no hay nada que validar
     const hasPaymentData = this.cardNumber || this.expiryDate || this.cvv;
-    
+
     if (!hasPaymentData) {
       return true;
     }
@@ -129,7 +130,8 @@ export class RegisterComponent implements OnInit {
     }
 
     if (hasPaymentData && (!this.cardNumber || !this.expiryDate || !this.cvv)) {
-      this.errorMessage = 'Si agregas un método de pago, debes completar todos los campos de tarjeta';
+      this.errorMessage =
+        'Si agregas un método de pago, debes completar todos los campos de tarjeta';
       return false;
     }
 
@@ -154,7 +156,6 @@ export class RegisterComponent implements OnInit {
   }
 
   private performRegistration(): void {
-
     const registrationData = {
       username: this.username,
       email: this.email,
@@ -164,24 +165,26 @@ export class RegisterComponent implements OnInit {
         paymentInfo: {
           cardNumber: this.cardNumber,
           expiryDate: this.expiryDate,
-          cvv: this.cvv
-        }
-      })
+          cvv: this.cvv,
+        },
+      }),
     };
 
     console.log('Datos de registro:', registrationData);
 
     this.authService.register(registrationData).subscribe({
-       next: (response: any) => {
-         console.log('Registro exitoso', response);
-         this.router.navigate(['/login']);
-    },
-       error: (error: { message: string; }) => {
-         this.errorMessage = error.message || 'Error al crear la cuenta';
-       }
-     });
-
-    this.router.navigate(['/login']);
+      next: (response: any) => {
+        console.log('Registro exitoso', response);
+        this.router.navigate(['/login']);
+      },
+      error: (err: any) => {
+        if (err.error && err.error.error) {
+          this.errorMessage = err.error.error;
+        } else {
+          this.errorMessage = 'Error al crear la cuenta. Intente de nuevo.';
+        }
+        console.error('Error en el registro:', this.errorMessage);
+      },
+    });
   }
 }
-
