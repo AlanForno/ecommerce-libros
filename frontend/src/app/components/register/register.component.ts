@@ -5,19 +5,21 @@ import { AuthService } from '../../shared/services/authentication/auth.service';
 
 @Component({
   selector: 'app-register',
-  imports:[FormsModule],
+  imports: [FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit {
 
- // Datos de acceso
+  // Datos de acceso
+  name: string = '';
+  surname: string = '';
   username: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
 
-  // Datos de pago (opcional)
+  // Datos de pago
   cardNumber: string = '';
   expiryDate: string = '';
   cvv: string = '';
@@ -26,13 +28,14 @@ export class RegisterComponent implements OnInit {
 
   // Expresiones regulares
   private readonly EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  private readonly NAME_SURNAME_REGEX = /^[a-zA-Z]{3,20}$/;
   private readonly USERNAME_REGEX = /^[a-zA-Z0-9_]{3,20}$/;
   private readonly PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   private readonly CARD_NUMBER_REGEX = /^\d{4}-\d{4}-\d{4}-\d{4}$/;
   private readonly EXPIRY_DATE_REGEX = /^(0[1-9]|1[0-2])\/\d{2}$/;
   private readonly CVV_REGEX = /^\d{3,4}$/;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     //Inicializacion
@@ -53,6 +56,27 @@ export class RegisterComponent implements OnInit {
   }
 
   private validateAccessData(): boolean {
+
+    if (!this.name.trim()) {
+      this.errorMessage = 'El campo nombre es obligatorio';
+      return false;
+    }
+
+    if (!this.NAME_SURNAME_REGEX.test(this.name)) {
+      this.errorMessage = 'El campo nombre debe tener entre 3 y 20 caracteres y solo puede contener letras';
+      return false;
+    }
+
+    if (!this.surname.trim()) {
+      this.errorMessage = 'El campo apellido es obligatorio';
+      return false;
+    }
+
+    if (!this.NAME_SURNAME_REGEX.test(this.surname)) {
+      this.errorMessage = 'El campo apellido debe tener entre 3 y 20 caracteres y solo puede contener letras';
+      return false;
+    }
+
 
     if (!this.username.trim()) {
       this.errorMessage = 'El nombre de usuario es obligatorio';
@@ -98,38 +122,39 @@ export class RegisterComponent implements OnInit {
   }
 
   private validatePaymentData(): boolean {
-    // Si no se proporcionaron datos de pago, no hay nada que validar
-    const hasPaymentData = this.cardNumber || this.expiryDate || this.cvv;
-    
-    if (!hasPaymentData) {
-      return true;
+
+    if (!this.cardNumber) {
+      this.errorMessage = 'El número de tarjeta es obligatorio';
+      return false;
     }
 
-    // Si se proporcionó algún dato de pago, validar todos
-    if (this.cardNumber && !this.CARD_NUMBER_REGEX.test(this.cardNumber)) {
+    if (!this.CARD_NUMBER_REGEX.test(this.cardNumber)) {
       this.errorMessage = 'El número de tarjeta debe tener el formato XXXX-XXXX-XXXX-XXXX';
       return false;
     }
 
-    if (this.expiryDate) {
-      if (!this.EXPIRY_DATE_REGEX.test(this.expiryDate)) {
-        this.errorMessage = 'La fecha de vencimiento debe tener el formato MM/AA';
-        return false;
-      }
-
-      if (!this.isValidExpiryDate(this.expiryDate)) {
-        this.errorMessage = 'La tarjeta está vencida';
-        return false;
-      }
-    }
-
-    if (this.cvv && !this.CVV_REGEX.test(this.cvv)) {
-      this.errorMessage = 'El CVV debe tener 3 o 4 dígitos';
+    if (!this.expiryDate) {
+      this.errorMessage = 'La fecha de vencimiento es obligatoria';
       return false;
     }
 
-    if (hasPaymentData && (!this.cardNumber || !this.expiryDate || !this.cvv)) {
-      this.errorMessage = 'Si agregas un método de pago, debes completar todos los campos de tarjeta';
+    if (!this.EXPIRY_DATE_REGEX.test(this.expiryDate)) {
+      this.errorMessage = 'La fecha de vencimiento debe tener el formato MM/AA';
+      return false;
+    }
+
+    if (!this.isValidExpiryDate(this.expiryDate)) {
+      this.errorMessage = 'La tarjeta está vencida';
+      return false;
+    }
+
+    if (!this.cvv) {
+      this.errorMessage = 'El CVV es obligatorio';
+      return false;
+    }
+
+    if (!this.CVV_REGEX.test(this.cvv)) {
+      this.errorMessage = 'El CVV debe tener 3 o 4 dígitos';
       return false;
     }
 
@@ -153,35 +178,42 @@ export class RegisterComponent implements OnInit {
     return true;
   }
 
-  private performRegistration(): void {
+  private async hashPaymentData(): Promise<string> {
+    const combined = `${this.cardNumber}|${this.expiryDate}|${this.cvv}`;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(combined);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  }
 
-    const registrationData = {
-      username: this.username,
-      email: this.email,
-      password: this.password,
-      confirmPassword: this.confirmPassword,
-      ...(this.cardNumber && {
-        paymentInfo: {
-          cardNumber: this.cardNumber,
-          expiryDate: this.expiryDate,
-          cvv: this.cvv
+  private async performRegistration(): Promise<void> {
+    try {
+      const paymentHash = await this.hashPaymentData();
+
+      const registrationData = {
+        name: this.name,
+        surname: this.surname,
+        username: this.username,
+        email: this.email,
+        password: this.password,
+        confirmPassword: this.confirmPassword,
+        paymentInfoId: paymentHash
+      };
+
+      this.authService.register(registrationData).subscribe({
+        next: () => {
+          console.log('Registro exitoso');
+          this.router.navigate(['/login']);
+        },
+        error: (error: any) => {
+          this.errorMessage = error.message || 'Error al crear la cuenta';
         }
-      })
-    };
-
-    console.log('Datos de registro:', registrationData);
-
-    this.authService.register(registrationData).subscribe({
-       next: (response: any) => {
-         console.log('Registro exitoso', response);
-         this.router.navigate(['/login']);
-    },
-       error: (error: { message: string; }) => {
-         this.errorMessage = error.message || 'Error al crear la cuenta';
-       }
-     });
-
-    this.router.navigate(['/login']);
+      });
+    } catch (err) {
+      console.error('Error al generar hash de pago:', err);
+      this.errorMessage = 'Error al procesar los datos de pago';
+    }
   }
 }
-

@@ -1,15 +1,11 @@
 export interface RegisterBodyDto {
+  name: string,
+  surname: string,
   username: string;
   email: string;
   password: string;
   confirmPassword: string;
-
-  // Opcional. Solo llega si el usuario completó los datos.
-  paymentInfo?: {
-    cardNumber: string;
-    expiryDate: string;
-    cvv: string;
-  };
+  paymentInfoId: string;
 }
 
 export interface LoginBodyDto {

@@ -1,11 +1,10 @@
 
 import { UserRepository } from "../repositories/user.repository.js";
 import type { RegisterBodyDto, LoginBodyDto } from '../dtos/auth.dtos.js';
-import type { User } from "@prisma/client";
+import type { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { boolean } from "zod";
-
 
 type UserWithoutPassword = Omit<User, 'password'>;
 
@@ -19,10 +18,11 @@ export class AuthService {
      * (Sintaxis de método de clase corregida: sin ':' ni '=>')
      */
     async register(userData: RegisterBodyDto): Promise<UserWithoutPassword> {
-        const { username, email, password, confirmPassword, paymentInfo } = userData;
+        const { name, surname, username, email, password, confirmPassword, paymentInfoId } = userData;
 
-        let creditCard = false;
-
+        if (await this.userRepository.findBySurname(surname)) {
+            throw new Error('El apellido ya está registrado.');
+        }
         if (password !== confirmPassword) {
             throw new Error('Las contraseñas no coinciden.');
         }
@@ -32,17 +32,19 @@ export class AuthService {
         if (await this.userRepository.findByUsername(username)) {
             throw new Error('El nombre de usuario ya está en uso.');
         }
-        if(paymentInfo !== null){
-            creditCard = true;
+        if(await this.userRepository.findByPaymentInfoId(paymentInfoId)){
+           throw new Error('Los datos de esa tarjeta ya se encuentra registrados.');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await this.userRepository.createUser({
+            name,
+            surname,
             username,
             email,
             password: hashedPassword,
-            hasCreditCard: creditCard
+            paymentInfoId
         });
 
         const { password: _, ...userWithoutPassword } = newUser;

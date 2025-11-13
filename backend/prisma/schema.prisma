@@ -23,13 +23,15 @@ model book {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  username      String   @unique @db.VarChar(20)
-  email         String   @unique @db.VarChar(255)
-  password      String   @db.VarChar(255)
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
-  hasCreditCard Boolean  @default(false)
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(20)
+  surname         String   @unique @db.VarChar(20)
+  username        String   @unique @db.VarChar(20)
+  email           String   @unique @db.VarChar(255)
+  password        String   @db.VarChar(255)
+  paymentInfoId   String   @db.VarChar(255)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   @@map("users")
 }
