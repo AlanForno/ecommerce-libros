@@ -19,6 +19,16 @@
     <p>Total: <strong>${{ total }}</strong></p>
     <button (click)="checkout()">Finalizar compra</button>
   </div>
+  <p>Total: <strong>${{ total }}</strong></p>
+    <button (click)="checkout()">Finalizar compra</button>
+
+        <button
+        (click)="finalizarSimulacroCompra()"
+        class="btn-primary"
+        [disabled]="cartItems.length === 0"
+    >
+        Ir a Mi Biblioteca
+    </button>
 </div>
 } @else {
 <p>Tu carrito está vacío.</p>

@@ -35,9 +35,13 @@ export class AuthService {
     const u = localStorage.getItem('usuario');
     return u ? JSON.parse(u) : null;
   }
-getUsuarioId(): number | null {
-  const usuario = this.getUsuario();
+// frontend/src/app/services/auth.service.ts (Añadir este método)
 
-  return usuario ? usuario.id : null;
+getUsuarioId(): number | null {
+  // ⚠️ REEMPLAZA esta línea con tu lógica real para obtener el usuario de la sesión/token
+  const usuario = JSON.parse(localStorage.getItem('usuario_logueado') || 'null');
+
+  // Asume que el objeto usuario tiene una propiedad 'id' de tipo string o number
+  return usuario && usuario.id ? parseInt(usuario.id, 10) : null;
 }
 }
