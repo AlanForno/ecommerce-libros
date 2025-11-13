@@ -7,9 +7,10 @@ import { AuthService } from '../../shared/services/authentication/auth.service';
   selector: 'app-register',
   imports: [FormsModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit {
+
 
   // Datos de acceso
   name: string = '';
@@ -30,7 +31,7 @@ export class RegisterComponent implements OnInit {
   private readonly EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   private readonly NAME_SURNAME_REGEX = /^[a-zA-Z]{3,20}$/;
   private readonly USERNAME_REGEX = /^[a-zA-Z0-9_]{3,20}$/;
-  private readonly PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  private readonly PASSWORD_REGEX =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   private readonly CARD_NUMBER_REGEX = /^\d{4}-\d{4}-\d{4}-\d{4}$/;
   private readonly EXPIRY_DATE_REGEX = /^(0[1-9]|1[0-2])\/\d{2}$/;
   private readonly CVV_REGEX = /^\d{3,4}$/;
@@ -77,14 +78,14 @@ export class RegisterComponent implements OnInit {
       return false;
     }
 
-
     if (!this.username.trim()) {
       this.errorMessage = 'El nombre de usuario es obligatorio';
       return false;
     }
 
     if (!this.USERNAME_REGEX.test(this.username)) {
-      this.errorMessage = 'El nombre de usuario debe tener entre 3 y 20 caracteres y solo puede contener letras, números y guiones bajos';
+      this.errorMessage =
+        'El nombre de usuario debe tener entre 3 y 20 caracteres y solo puede contener letras, números y guiones bajos';
       return false;
     }
 
@@ -104,7 +105,8 @@ export class RegisterComponent implements OnInit {
     }
 
     if (!this.PASSWORD_REGEX.test(this.password)) {
-      this.errorMessage = 'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales';
+      this.errorMessage =
+        'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales';
       return false;
     }
 
