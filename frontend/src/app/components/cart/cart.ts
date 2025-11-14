@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../api/services/cart.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -9,7 +10,6 @@ import { Router } from '@angular/router';
   templateUrl: './cart.html',
   styleUrls: ['./cart.css'],
 })
-
 export class CartComponent implements OnInit {
 
   cartService = inject(CartService);
@@ -43,13 +43,26 @@ export class CartComponent implements OnInit {
     this.total = this.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   }
 
-  removeFromCart(userId: number, bookId: number): Observable<any> {
-      return this.http.delete(`$environments.api_url}/remove`, {
-          params: { userId: userId.toString(), bookId: bookId.toString() }
+  removeFromCart(bookId: number): void {
+      this.cartService.removeFromCart(this.userId, bookId).subscribe({
+          next: () => {
+            this.cartItems = this.cartItems.filter(book => book.id !== bookId);
+            this.calculateTotal();
+            alert('Item eliminado del carrito.');
+          },
+          error: (error) => {
+              if (error instanceof Error) {
+                  console.error('Error eliminando del carrito:', error.message);
+                  alert(`❌ Error al eliminar: ${error.message}`);
+              } else {
+                  console.error('Error desconocido eliminando del carrito:', error);
+                  alert('❌ Error al eliminar el item.');
+              }
+          }
       });
   }
 
-checkout(): void {
+  checkout(): void {
     if (this.cartItems.length === 0) {
         alert('El carrito está vacío. Agrega libros para finalizar la compra.');
         return;
@@ -61,8 +74,7 @@ checkout(): void {
         this.total = 0;
         alert('🎉 ¡Pago exitoso! La compra ha sido finalizada.');
 
-        // ✅ REDIRECCIÓN: Navegar a la ruta de Mi Biblioteca
-        this.router.navigate(['/mibiblioteca']); // Asegúrate que esta sea tu ruta correcta
+        this.router.navigate(['/mibiblioteca']);
       },
       error: (error) => {
         if (error instanceof Error) {
