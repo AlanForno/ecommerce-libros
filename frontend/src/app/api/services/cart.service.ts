@@ -28,10 +28,11 @@ export class CartService {
    * Agrega un libro al carrito del usuario
    * @param bookId id del libro a agregar
    */
-  addToCart(bookId: number): Observable<any> {
-    return this.http.post(`${enviroments.api_url}/cart`, { bookId });
-  }
-  
+  addToCart(userId: number, bookId: number, quantity: number): Observable<any> {
+      const body = { userId, bookId, quantity };
+      return this.http.post(`${enviroments.api_url}/add`, body);
+    }
+
   /**
    * Elimina un libro del carrito
    * @param bookId id del libro a eliminar
