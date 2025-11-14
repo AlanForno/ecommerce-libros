@@ -12,31 +12,116 @@
     /* Fondo Crema Suave */
 }
 
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+}
+
 .hero-content h1 {
     font-size: 2.5em;
     margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 1.1em;
+    line-height: 1.6;
 }
 
 /* Estilos para las tarjetas de funcionalidades */
 .features-section {
-    padding: 50px;
+    padding: 50px 50px;
     text-align: center;
     background-color: var(--color-secundario);
     /* Fondo Arena Cálida */
 }
 
+.features-section h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: var(--color-primario);
+    /* Marrón Cacao para el título */
+}
+
 .card-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
     margin-top: 30px;
 }
 
 .feature-card {
-    width: 30%;
-    padding: 20px;
+    width: 320px;
+    max-width: 100%;
+    padding: 25px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #F5F5DC;
     /* Fondo Crema Suave */
     color: var(--color-primario);
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card h3 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+/* responsive - tablet */
+@media (max-width: 992px) {
+  .hero-section {
+    flex-direction: column;
+    padding: 60px 30px;
+    text-align: center;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .features-section {
+    padding: 40px 30px;
+  }
+
+  .card-container {
+     justify-content: space-around;
+  }
+}
+
+/* responsive - móvil */
+@media (max-width: 600px) {
+    .hero-section {
+        padding: 40px 20px;
+    }
+    
+    .hero-content h1 {
+        font-size: 2em;
+    }
+    
+    .features-section {
+        padding: 30px 20px;
+    }
+    
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .feature-card {
+        width: 100%;
+        max-width: 400px;
+    }
+    } 
