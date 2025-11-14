@@ -38,7 +38,6 @@ export class AuthController {
    */
   public login = async (req: LoginRequest, res: Response): Promise<Response> => {
     try {
-      // El DTO asegura que 'email' y 'password' existen
       const { token } = await this.authService.login(req.body);
       return res.status(200).json({
         message: 'Login exitoso.',
@@ -46,7 +45,7 @@ export class AuthController {
       });
     } catch (error: any) {
       if (error.message.includes('inválidas')) {
-        return res.status(401).json({ error: error.message }); // 401 Unauthorized
+        return res.status(401).json({ error: error.message });
       }
       return res.status(500).json({ error: 'Error interno del servidor.' });
     }

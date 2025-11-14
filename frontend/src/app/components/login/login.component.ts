@@ -13,11 +13,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router, private authService: AuthService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-  }
-
-  // Estado del componente usando Signals
   username = signal('');
   password = signal('');
   errorMessage = signal<string | null>(null);
@@ -30,7 +27,6 @@ export class LoginComponent implements OnInit {
     const user = this.username();
     const pass = this.password();
 
-    // Validación básica en el cliente
     if (!user || !pass) {
       this.errorMessage.set('El nombre de usuario y la contraseña son obligatorios.');
       this.status.set('error');
@@ -38,17 +34,19 @@ export class LoginComponent implements OnInit {
     }
 
     this.authService.login(user, pass).subscribe({
-      next: (isAuthenticated) => {
-        if (isAuthenticated) {
-          console.log('¡Inicio de sesión exitoso!');
-          this.status.set('success');
-          this.router.navigate(['/catalogo']);
-          alert('¡Inicio de sesión exitoso!');
-        }
+      next: (response) => {
+        console.log('Respuesta del servidor:', response);
+        this.status.set('success');
+        this.router.navigate(['/catalogo']);
       },
-      error: (err: any) => {
+
+      error: (err) => {
         console.error('Error en el inicio de sesión:', err);
-        const msg = err.error?.message || err.message || 'Error desconocido en el servidor.';
+
+        const msg =
+          err.error?.message ||
+          err.message ||
+          'Error desconocido en el servidor.';
 
         this.errorMessage.set(msg);
         this.status.set('error');

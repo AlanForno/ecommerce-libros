@@ -15,7 +15,6 @@ export class AuthService {
     constructor(private userRepository: UserRepository) { }
     /**
      * Lógica de registro de usuario.
-     * (Sintaxis de método de clase corregida: sin ':' ni '=>')
      */
     async register(userData: RegisterBodyDto): Promise<UserWithoutPassword> {
         const { name, surname, username, email, password, confirmPassword, paymentInfoId } = userData;
@@ -53,10 +52,9 @@ export class AuthService {
 
     /**
      * Lógica de Login de usuario.
-     * (Sintaxis de método de clase corregida)
      */
     async login(loginData: LoginBodyDto): Promise<{ token: string }> {
-        console.log("LOGIN BODY:", loginData);
+        
         const { username, password } = loginData;
         const user = await this.userRepository.findByUsername(username);
         if (!user) {
