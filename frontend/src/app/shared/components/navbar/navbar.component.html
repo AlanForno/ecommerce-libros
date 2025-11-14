@@ -18,8 +18,16 @@
                 <a routerLink="/carrito" class="nav-link" (click)="closeMenu()">Carrito</a>
             </div>
             <div class="user-actions">
-                <a href="/login" class="login-button" (click)="closeMenu()">Iniciar Sesión</a>
-                <a href="/registro" class="register-button" (click)="closeMenu()">Registro</a>
+                @if (!auth.isAuthenticated()) {
+                <a routerLink="/login" class="login-button" (click)="closeMenu()">Iniciar Sesión</a>
+                <a routerLink="/registro" class="register-button" (click)="closeMenu()">Registro</a>
+                }
+
+                @if (auth.isAuthenticated()) {
+                <button class="login-button" (click)="logout(); closeMenu()">
+                    Cerrar Sesión
+                </button>
+                }
             </div>
         </div>
     </div>

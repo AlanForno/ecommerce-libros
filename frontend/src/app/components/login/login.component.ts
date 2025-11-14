@@ -11,18 +11,17 @@ import { AuthService } from '../../shared/services/authentication/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
-   ngOnInit(): void {
+  ngOnInit(): void {}
 
-  }
+  username = signal('');
+  password = signal('');
+  errorMessage = signal<string | null>(null);
+  status = signal<'idle' | 'loading' | 'success' | 'error'>('idle')
 
-    username = signal('');
-    password = signal('');
-    errorMessage = signal<string | null>(null);
-    status = signal<'idle' | 'loading' | 'success' | 'error'>('idle')
 
-   onLogin(): void {
+  onLogin(): void {
     this.status.set('loading');
     this.errorMessage.set(null);
 
@@ -30,16 +29,20 @@ export class LoginComponent implements OnInit {
     const pass = this.password();
 
     if (!user || !pass) {
-        this.errorMessage.set('El nombre de usuario y la contraseña son obligatorios.');
-        this.status.set('error');
-        return;
+      this.errorMessage.set('El nombre de usuario y la contraseña son obligatorios.');
+      this.status.set('error');
+      return;
     }
 
-    
-        console.log('¡Inicio de sesión exitoso!');
+
+    this.authService.login(user, pass).subscribe({
+      next: (response) => {
+        console.log('Respuesta del servidor:', response);
         this.status.set('success');
         this.router.navigate(['/catalogo']);
+      },
 
+ 
     //this.authService.login(user, pass).subscribe({
       //next: (isAuthenticated) => {
         //if (isAuthenticated) {
@@ -56,5 +59,19 @@ export class LoginComponent implements OnInit {
         //this.status.set('error');
       //}
     //});
+
+      error: (err) => {
+        console.error('Error en el inicio de sesión:', err);
+
+        const msg =
+          err.error?.message ||
+          err.message ||
+          'Error desconocido en el servidor.';
+
+        this.errorMessage.set(msg);
+        this.status.set('error');
+      }
+    });
+
   }
 }
