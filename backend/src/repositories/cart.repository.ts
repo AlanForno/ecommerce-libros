@@ -20,32 +20,27 @@ export class CartRepository {
   }
 
   async addBookToCart(userId: number, bookId: number, quantity: number = 1): Promise<CartItem> {
-    const existingItem = await prisma.cart.findFirst({
-      where: { userId, bookId },
-      include: { book: true },
-    });
-
-    if (existingItem) {
-      const updated = await prisma.cart.update({
-        where: { id: existingItem.id },
-        data: { quantity: existingItem.quantity + quantity },
+      const existingItem = await prisma.cart.findFirst({
+        where: { userId: userId, bookId: bookId },
         include: { book: true },
       });
 
-      return { book: updated.book, quantity: updated.quantity };
-    }
+      if (existingItem) {
+        // Regla: Solo una unidad por libro EPUB (lanzar error si ya existe)
+        throw new Error(`El libro (ID: ${bookId}) ya está en el carrito. Solo se permite una unidad por libro EPUB.`);
+      }
 
-    const created = await prisma.cart.create({
-      data: { userId, bookId, quantity },
-      include: { book: true },
-    });
+      const created = await prisma.cart.create({
+        data: { userId: userId, bookId: bookId, quantity: quantity }, 
+        include: { book: true },
+      });
 
-    return { book: created.book, quantity: created.quantity };
+      return { book: created.book, quantity: created.quantity };
   }
 
   async removeBookFromCart(userId: number, bookId: number) {
     return await prisma.cart.deleteMany({
-      where: { userId, bookId },
+      where: { userId },
     });
   }
 
