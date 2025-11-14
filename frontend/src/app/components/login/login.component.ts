@@ -11,52 +11,46 @@ import { AuthService } from '../../shared/services/authentication/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
-   ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
-  // Estado del componente usando Signals
-    username = signal('');
-    password = signal('');
-    errorMessage = signal<string | null>(null);
-    status = signal<'idle' | 'loading' | 'success' | 'error'>('idle')
+  username = signal('');
+  password = signal('');
+  errorMessage = signal<string | null>(null);
+  status = signal<'idle' | 'loading' | 'success' | 'error'>('idle')
 
-   onLogin(): void {
+  onLogin(): void {
     this.status.set('loading');
     this.errorMessage.set(null);
 
     const user = this.username();
     const pass = this.password();
-    
-    // Validación básica en el cliente
+
     if (!user || !pass) {
-        this.errorMessage.set('El nombre de usuario y la contraseña son obligatorios.');
-        this.status.set('error');
-        return;
+      this.errorMessage.set('El nombre de usuario y la contraseña son obligatorios.');
+      this.status.set('error');
+      return;
     }
 
-    //Simulamos exito hasta que este el back
-        console.log('¡Inicio de sesión exitoso!');
+    this.authService.login(user, pass).subscribe({
+      next: (response) => {
+        console.log('Respuesta del servidor:', response);
         this.status.set('success');
         this.router.navigate(['/catalogo']);
+      },
 
-    //this.authService.login(user, pass).subscribe({
-      //next: (isAuthenticated) => {
-        //if (isAuthenticated) {
-          //console.log('¡Inicio de sesión exitoso!');
-          //this.status.set('success');
-          // Aquí navegarías a otra página, por ejemplo:
-          // this.router.navigate(['/detalle']);
-          //alert('¡Inicio de sesión exitoso!'); // Simulación de navegación
-        //}
-      //},
-      //error: (errorMsg) => {
-        //console.error('Error en el inicio de sesión:', errorMsg);
-        //this.errorMessage.set(errorMsg);
-        //this.status.set('error');
-      //}
-    //});
-  } 
+      error: (err) => {
+        console.error('Error en el inicio de sesión:', err);
+
+        const msg =
+          err.error?.message ||
+          err.message ||
+          'Error desconocido en el servidor.';
+
+        this.errorMessage.set(msg);
+        this.status.set('error');
+      }
+    });
+  }
 }

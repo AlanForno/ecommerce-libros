@@ -6,6 +6,34 @@
       <h3 class="section-title">Datos de Acceso</h3>
 
       <div class="form-group">
+        <label for="nombre">Nombre<span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="nombre" 
+          name="nombre" 
+          [(ngModel)]="name" 
+          #nameInput="ngModel"
+          required 
+          pattern="^[a-zA-Z]{3,20}$"
+          placeholder="Ej: nombre"
+          autocomplete="nombre">
+      </div>
+
+      <div class="form-group">
+        <label for="apellido">Apellido<span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="apellido" 
+          name="apellido" 
+          [(ngModel)]="surname" 
+          #surnameInput="ngModel"
+          required 
+          pattern="^[a-zA-Z]{3,20}$"
+          placeholder="Ej: apellido"
+          autocomplete="apellido">
+      </div>
+
+      <div class="form-group">
         <label for="username">Nombre de Usuario <span class="required">*</span></label>
         <input 
           type="text" 
@@ -62,45 +90,85 @@
           autocomplete="new-password">
       </div>
 
-      <h3 class="section-title payment-section">Datos de Pago (Opcional)</h3>
+      <h3 class="section-title payment-section">Datos de Pago</h3>
       <p class="section-description">
-        Puedes agregar tu método de pago principal ahora o hacerlo más tarde desde tu perfil.
+        Añadir su metodo de pago es seguro en nuestra aplicación y le permitirá poder adquirir nuestros productos
       </p>
 
       <div class="form-group">
-        <label for="cardNumber">Número de Tarjeta</label>
+        <label for="cardNumber">Número de Tarjeta <span class="required">*</span></label>
         <input 
           type="text" 
           id="cardNumber" 
           name="cardNumber" 
           [(ngModel)]="cardNumber" 
+          #cardNumberInput="ngModel"
           placeholder="1234-5678-9012-3456" 
           maxlength="19"
-          autocomplete="cc-number">
+          autocomplete="cc-number"
+          required
+          pattern="^\d{4}-\d{4}-\d{4}-\d{4}$">
+
+        @if (cardNumberInput.invalid && (cardNumberInput.dirty || cardNumberInput.touched || registerForm.submitted)) {
+          <div class="field-error-message">
+            @if (cardNumberInput.errors?.['required']) {
+              El número de tarjeta es obligatorio.
+            }
+            @if (cardNumberInput.errors?.['pattern']) {
+              El formato debe ser XXXX-XXXX-XXXX-XXXX.
+            }
+          </div>
+        }
       </div>
 
       <div class="row-group">
         <div class="form-group date-group">
-          <label for="expiryDate">Vencimiento</label>
+          <label for="expiryDate">Vencimiento <span class="required">*</span></label>
           <input 
             type="text" 
             id="expiryDate" 
             name="expiryDate" 
             [(ngModel)]="expiryDate"
+            #expiryDateInput="ngModel"
             placeholder="MM/AA" 
             maxlength="5"
-            autocomplete="cc-exp">
+            autocomplete="cc-exp"
+            required
+            pattern="^(0[1-9]|1[0-2])\/\d{2}$">
+          @if (expiryDateInput.invalid && (expiryDateInput.dirty || expiryDateInput.touched || registerForm.submitted)) {
+            <div class="field-error-message">
+              @if (expiryDateInput.errors?.['required']) {
+                Requerido.
+              }
+              @if (expiryDateInput.errors?.['pattern']) {
+                Formato MM/AA.
+              }
+            </div>
+          }
         </div>
         <div class="form-group cvv-group">
-          <label for="cvv">CVV</label>
+          <label for="cvv">CVV <span class="required">*</span></label>
           <input 
             type="text" 
             id="cvv" 
             name="cvv" 
             [(ngModel)]="cvv"
+            #cvvInput="ngModel"
             placeholder="123" 
             maxlength="4"
-            autocomplete="cc-csc">
+            autocomplete="cc-csc"
+            required
+            pattern="^\d{3,4}$">
+          @if (cvvInput.invalid && (cvvInput.dirty || cvvInput.touched || registerForm.submitted)) {
+            <div class="field-error-message">
+              @if (cvvInput.errors?.['required']) {
+                Requerido.
+              }
+              @if (cvvInput.errors?.['pattern']) {
+                3 o 4 dígitos.
+              }
+            </div>
+          }
         </div>
       </div>
 

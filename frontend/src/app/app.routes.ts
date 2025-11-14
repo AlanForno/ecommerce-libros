@@ -8,6 +8,7 @@ import { BookDetail } from './components/book-detail/book-detail';
 import { CartComponent } from './components/cart/cart';
 import { CatalogComponent } from './components/catalog/catalog.component';
 import { LibraryComponent } from './components/library/library';
+import { authGuard } from './shared/guards/auth.guard';
 
 
 export const routes: Routes = [
@@ -24,17 +25,21 @@ export const routes: Routes = [
   {
     path: 'detalle/:id',
     component: BookDetail,
+    canActivate: [authGuard]
   },
   {
     path: 'carrito',
-    component: CartComponent
+    component: CartComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'catalogo',
-    component: CatalogComponent
+    component: CatalogComponent,
+    canActivate: [authGuard]
   },
   { path: 'biblioteca',
-    component: LibraryComponent
+    component: LibraryComponent,
+    canActivate: [authGuard]
   },
   {
     path: '**',
