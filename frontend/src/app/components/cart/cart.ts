@@ -1,94 +1,93 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { LibraryService } from '../../shared/services/authentication/library.service';
 
 @Component({
-  selector: 'app-cart',
-  templateUrl: './cart.html',
-  styleUrls: ['./cart.css']
+  selector: 'app-cart',
+  templateUrl: './cart.html',
+  styleUrls: ['./cart.css'],
 })
 export class CartComponent implements OnInit {
-  cartItems: any[] = [];
-  total: number = 0;
- 
-  private readonly TEST_USER_ID = 21;
+  libraryService = inject(LibraryService);
+  cartItems: any[] = [];
+  total: number = 0;
 
- 
-  constructor(
-    private router: Router,
-    private http: HttpClient
-  ) { }
+  constructor(private router: Router, private http: HttpClient) {}
 
-  ngOnInit(): void {
-    this.loadCart();
-  }
-
+  ngOnInit(): void {
+    this.loadCart();
+  }
 
   loadCart(): void {
-    this.cartItems = [
-      { id: 1, title: 'Libro de ejemplo 1', author: 'Autor 1', price: 100 },
-      { id: 2, title: 'Libro de ejemplo 2', author: 'Autor 2', price: 200 }
-    ];
-    this.calculateTotal();
-  }
+  this.cartItems = [
+  {
+    id: 3,
+    title: 'El Principito',
+    author: 'Antoine de Saint-Exupéry',
+    price: 12000.75
+  },
+  {
+    id: 4,
+    title: 'Orgullo y Prejuicio',
+    author: 'Jane Austen',
+    price: 18000.00
+  },
+  {
+    id: 5,
+    title: 'El Hobbit',
+    author: 'J.R.R. Tolkien',
+    price: 22000.30
+  },
+  {
+    id: 6,
+    title: 'Don Quijote de la Mancha',
+    author: 'Miguel de Cervantes',
+    price: 30000.00
+  },
+  {
+    id: 7,
+    title: 'La Sombra del Viento',
+    author: 'Carlos Ruiz Zafón',
+    price: 20000.50
+  },
+  {
+    id: 8,
+    title: 'Harry Potter y la Piedra Filosofal',
+    author: 'J.K. Rowling',
+    price: 19000.99
+  }
+];
 
-  calculateTotal(): void {
-    this.total = this.cartItems.reduce((acc, item) => acc + item.price, 0);
-  }
 
-  removeFromCart(bookId: number): void {
-    this.cartItems = this.cartItems.filter(book => book.id !== bookId);
-    this.calculateTotal();
-  }
+    this.calculateTotal();
+  }
+  calculateTotal(): void {
+    this.total = this.cartItems.reduce((acc, item) => acc + item.price, 0);
+  }
+  removeFromCart(bookId: number): void {
+    this.cartItems = this.cartItems.filter((book) => book.id !== bookId);
+    this.calculateTotal();
+  }
 
-  checkout(): void {
-    alert('El proceso de pago se realizaría aquí.');
-  }
+finalizarCompra(books: any[]): void {
+  this.saveBooks(books);  
+  this.router.navigate(['/library']);
+}
 
-  finalizarSimulacroCompra(): void {
-
-    if (this.cartItems.length === 0) {
-      alert('El carrito está vacío.');
-      return;
-    }
-
-    const bookIdsToPurchase = this.cartItems.map(item => item.id);
-
-    let successCount = 0;
-    let errorCount = 0;
-
-    bookIdsToPurchase.forEach(bookId => {
-      const purchaseData = {
-        userId: this.TEST_USER_ID,
-        bookId: bookId
-      };
-
-      this.http.post('http://localhost:3000/api/library/add', purchaseData).subscribe({
-        next: (res: any) => {
-          successCount++;
-          if (successCount + errorCount === bookIdsToPurchase.length) {
-            this.handleCompletion(errorCount === 0);
-          }
-        },
-        error: (err) => {
-          errorCount++;
-          if (successCount + errorCount === bookIdsToPurchase.length) {
-            this.handleCompletion(false);
-          }
-        }
-      });
+saveBooks(books: any[]): void {
+  const userId = Number(localStorage.getItem('userId'));
+  console.log('Guardando libros para el usuario ID:', userId);
+  for (let book of books) {
+    this.libraryService.addBook(userId,book.id).subscribe({
+      next: (response) => {
+        console.log('Libro agregado a la biblioteca:', response);
+      },
+      error: (err) => {
+        console.error('Error al guardar libro:', err);
+      }
     });
   }
-
-  private handleCompletion(success: boolean): void {
-    if (success) {
-      alert('Simulacro de compra exitoso');
-      this.cartItems = [];
-      this.total = 0;
-      this.router.navigate(['/biblioteca']);
-    } else {
-      alert(`Error al registrar la compra. Verifique que el Usuario ID ${this.TEST_USER_ID} exista en la BD.`);
-    }
-  }
+}
+    
 }

@@ -8,7 +8,7 @@ export class AppRoutes {
         const router = Router();
         router.use('/api/book', bookRouter);
         router.use('/api/library', libraryRouter); 
-             router.use('/api/auth', authRouter)   
+        router.use('/api/auth', authRouter)   
 
         return router;
     }

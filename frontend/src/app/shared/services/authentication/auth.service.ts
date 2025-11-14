@@ -26,29 +26,24 @@ export class AuthService {
     return this.httpClient.post(`${BASE_URL}/register`, user);
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.httpClient.post(`${BASE_URL}/login`, { username, password }).pipe(
-      tap((response: any) => {
-        if (response.token) {
-          localStorage.setItem('token', response.token);
-        }
-        this.isAuthenticated.set(true);
-      })
-    );
-  }
+    login(username: string, password: string): Observable<any> {
+      return this.httpClient.post(`${BASE_URL}/login`, { username, password }).pipe(
+        tap((response: any) => {
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+          }
+          if (response.user?.id) {
+          localStorage.setItem('userId', response.user.id);
+          }
+          this.isAuthenticated.set(true);
+        })
+      );
+    }
 
   cerrarSesion(): void {
     this.isAuthenticated.set(false);
     localStorage.clear();
     this.router.navigate(['/login']);
   }
-// frontend/src/app/services/auth.service.ts (Añadir este método)
 
-getUsuarioId(): number | null {
-  // ⚠️ REEMPLAZA esta línea con tu lógica real para obtener el usuario de la sesión/token
-  const usuario = JSON.parse(localStorage.getItem('usuario_logueado') || 'null');
-
-  // Asume que el objeto usuario tiene una propiedad 'id' de tipo string o number
-  return usuario && usuario.id ? parseInt(usuario.id, 10) : null;
-}
 }

@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -23,38 +24,28 @@ model book {
   library     Library[]
 }
 
-model usuario {
-  id       Int       @id @default(autoincrement())
-  nombre   String    @db.VarChar(100)
-  apellido String    @db.VarChar(100)
-  email    String    @unique @db.VarChar(150)
-  password String    @db.VarChar(200)
-  rol      String    @db.VarChar(50)
-  creadoEn DateTime  @default(now())
-  library  Library[]
-}
-
 model Library {
   id        Int      @id @default(autoincrement())
-  usuarioId Int
+  usuarioId Int     
   bookId    Int
   fecha     DateTime @default(now())
   book      book     @relation(fields: [bookId], references: [id])
-  usuario   usuario  @relation(fields: [usuarioId], references: [id])
-
+  usuario   User     @relation(fields: [usuarioId], references: [id])
   @@unique([usuarioId, bookId])
+  @@map("library") 
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
-  name            String   @db.VarChar(20)
-  surname         String   @unique @db.VarChar(20)
-  username        String   @unique @db.VarChar(20)
-  email           String   @unique @db.VarChar(255)
-  password        String   @db.VarChar(255)
-  paymentInfoId   String   @db.VarChar(255)
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(20)
+  surname       String   @unique @db.VarChar(20)
+  username      String   @unique @db.VarChar(20)
+  email         String   @unique @db.VarChar(255)
+  password      String   @db.VarChar(255)
+  paymentInfoId String   @db.VarChar(255) @map("paymentinfoid")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  library       Library[]
 
   @@map("users")
 }
