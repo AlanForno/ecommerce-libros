@@ -29,7 +29,7 @@ describe('CartComponent', () => {
   });
 
   it('debe eliminar un libro del carrito y recalcular total', () => {
-    component.removeFromCart('1');
+    component.removeFromCart(Number('1'));
     expect(component.cartItems.length).toBe(1);
     expect(component.cartItems[0].id).toBe('2');
     expect(component.total).toBe(15);
