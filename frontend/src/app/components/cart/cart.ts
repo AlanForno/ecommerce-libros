@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { LibraryService } from '../../shared/services/authentication/library.service';
+import { AuthService } from '../../shared/services/authentication/auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -10,6 +11,7 @@ import { LibraryService } from '../../shared/services/authentication/library.ser
 })
 export class CartComponent implements OnInit {
   libraryService = inject(LibraryService);
+  authService = inject(AuthService);
   cartItems: any[] = [];
   total: number = 0;
 
@@ -76,18 +78,24 @@ finalizarCompra(books: any[]): void {
 }
 
 saveBooks(books: any[]): void {
-  const userId = Number(localStorage.getItem('userId'));
-  console.log('Guardando libros para el usuario ID:', userId);
-  for (let book of books) {
-    this.libraryService.addBook(userId,book.id).subscribe({
-      next: (response) => {
-        console.log('Libro agregado a la biblioteca:', response);
-      },
-      error: (err) => {
-        console.error('Error al guardar libro:', err);
-      }
-    });
+ 
+    const userId = this.authService.getUsuarioId(); 
+
+    if (!userId) {
+      console.error('No se pudo obtener el ID del usuario. No se pueden guardar libros.');
+      return;
+    }
+    for (let book of books) {
+      this.libraryService.addBook(userId, book.id).subscribe({
+        next: (response) => {
+         
+        },
+        error: (err) => {
+       
+        }
+      });
+    }
   }
-}
+
     
 }

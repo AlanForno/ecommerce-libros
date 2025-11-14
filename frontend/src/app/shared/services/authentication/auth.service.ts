@@ -32,9 +32,11 @@ export class AuthService {
           if (response.token) {
             localStorage.setItem('token', response.token);
           }
-          if (response.user?.id) {
-          localStorage.setItem('userId', response.user.id);
+          
+          if (response.userId) { 
+            localStorage.setItem('userId', response.userId); 
           }
+
           this.isAuthenticated.set(true);
         })
       );
@@ -44,6 +46,11 @@ export class AuthService {
     this.isAuthenticated.set(false);
     localStorage.clear();
     this.router.navigate(['/login']);
+  }
+
+  public getUsuarioId(): number | null {
+    const userId = localStorage.getItem('userId');
+    return userId ? Number(userId) : null;
   }
 
 }
