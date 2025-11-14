@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
-import { enviroments } from '../../../../enviroments/enviroments.develop';
+import { enviroments } from '../../../enviroments/enviroments.develop';
+import { Book, BookPreview } from '../../shared/interfaces/book';
+import { Observable, forkJoin, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +16,9 @@ export class LibraryService {
     return this.httpClient.post(`${enviroments.api_url}/library/add/`, body);
   }
 
-
-
-  getLibrary(userId: number): Observable<any> {
-    return this.httpClient.get(`${enviroments.api_url}/user/${userId}`);
+  getLibrary(userId: number): Observable<BookPreview[]> {
+    return this.httpClient
+      .get<{ books: BookPreview[] }>(`${enviroments.api_url}/library/user/${userId}`)
+      .pipe(map((response) => response.books));
   }
 }

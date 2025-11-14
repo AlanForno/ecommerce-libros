@@ -18,14 +18,8 @@ export class LibraryController {
     try {
       const books = await libraryService.getLibraryForUser(usuarioId);
 
-      //              if (!books) {
-      //                 // El servicio podría devolver null o undefined si el usuario no existe
-      //                  return res.status(404).json({ error: 'Usuario no encontrado.' });
-      //              }
-
       return res.json({ books });
     } catch (error: any) {
-      console.error("Error al obtener la biblioteca:", error);
       if (error.message === "Usuario no encontrado") {
         return res.status(404).json({ error: error.message });
       }
@@ -60,6 +54,7 @@ export class LibraryController {
           book: newEntry.book,
         });
     } catch (error: any) {
+      // Capturamos el error si el libro ya existe
       if (error.code === "P2002") {
         return res
           .status(409)

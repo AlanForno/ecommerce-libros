@@ -46,8 +46,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
   getCatalog() {
     this.bookService.getAllBooksPreviews().subscribe({
       next: (books) => {
-        console.log('Catálogo completo recibido:', books);
-        console.log('Primer libro:', books[0]);
         this.books = books;
         this.errorMessage = '';
       },

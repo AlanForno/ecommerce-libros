@@ -1,18 +1,32 @@
+
 <div class="library">
   <h2>Mi Biblioteca</h2>
 
-  <div *ngIf="loading">Cargando libros...</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
+  @if (errorMessage) {
+    <div class="error">{{ errorMessage }}</div>
+  }
 
-  <div *ngIf="!loading && books.length === 0">
-    <p>Aún no has comprado libros.</p>
-  </div>
+  @if (books.length > 0) {
+    
+    <div class="book-list">
 
-  <div class="book-list" *ngIf="books.length > 0">
-    <div class="book" *ngFor="let book of books">
-      <h3>{{ book.titulo }}</h3>
-      <p><strong>Autor:</strong> {{ book.autor }}</p>
-      <p><strong>Precio:</strong> {{ book.precio | currency:'USD' }}</p>
+      @for (book of books; track book.id) {
+        <div class="book">
+
+          <h3>{{ book.titulo }}</h3>
+          <p><strong>Autor:</strong> {{ book.autor }}</p>
+          <p><strong>Formato:</strong> {{ book.formato }}</p>
+          
+          <p><strong>Precio:</strong> {{ book.precio | currency:'ARS':'$' }}</p>
+        </div>
+      }
     </div>
-  </div>
+
+  } @else if (!errorMessage) { 
+    <div>
+      <p>Aún no tienes libros comprados en tu biblioteca.</p>
+    </div>
+  }
+
 </div>
+

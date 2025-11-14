@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { LibraryService } from '../../shared/services/authentication/library.service';
+import { LibraryService } from '../../api/services/library.service';
 import { AuthService } from '../../shared/services/authentication/auth.service';
 
 @Component({
@@ -78,20 +78,16 @@ finalizarCompra(books: any[]): void {
 }
 
 saveBooks(books: any[]): void {
- 
     const userId = this.authService.getUsuarioId(); 
 
     if (!userId) {
-      console.error('No se pudo obtener el ID del usuario. No se pueden guardar libros.');
       return;
     }
     for (let book of books) {
       this.libraryService.addBook(userId, book.id).subscribe({
         next: (response) => {
-         
         },
         error: (err) => {
-       
         }
       });
     }
