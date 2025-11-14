@@ -7,23 +7,28 @@
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    background-color: #EEDCB3; /* Arena Cálida */
+    background-color: #EEDCB3;
+    /* Arena Cálida */
 }
 
 /* Tarjeta o Contenedor del Formulario que usa el color Crema Suave */
 .register-card {
-    background-color: #F5F5DC; /* Crema Suave */
+    background-color: #F5F5DC;
+    /* Crema Suave */
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra suave para destacar */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    /* Sombra suave para destacar */
     width: 100%;
-    max-width: 400px; /* Ancho máximo para formularios */
+    max-width: 400px;
+    /* Ancho máximo para formularios */
     text-align: center;
 }
 
 /* Título (usa el color Marrón Cacao) */
 .register-card h2 {
-    color: #A0522D; /* Marrón Cacao */
+    color: #A0522D;
+    /* Marrón Cacao */
     margin-bottom: 30px;
     font-size: 2em;
 }
@@ -38,25 +43,31 @@
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #A0522D; /* Marrón Cacao */
+    color: #A0522D;
+    /* Marrón Cacao */
 }
 
 /* Estilos de los campos de entrada (input) */
 .form-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #EEDCB3; /* Borde suave de Arena Cálida */
+    border: 1px solid #EEDCB3;
+    /* Borde suave de Arena Cálida */
     border-radius: 5px;
-    box-sizing: border-box; /* Asegura que el padding no cambie el ancho total */
-    background-color: white; /* Fondo del campo en blanco para mejor legibilidad */
+    box-sizing: border-box;
+    /* Asegura que el padding no cambie el ancho total */
+    background-color: white;
+    /* Fondo del campo en blanco para mejor legibilidad */
     color: #794225;
 }
 
 /* Foco en el campo (usa el color Marrón Oscuro) */
 .form-group input:focus {
-    border-color: #794225; /* Marrón Oscuro para el foco */
+    border-color: #794225;
+    /* Marrón Oscuro para el foco */
     outline: none;
-    box-shadow: 0 0 5px rgba(121, 66, 37, 0.5); /* Sombra sutil de foco */
+    box-shadow: 0 0 5px rgba(121, 66, 37, 0.5);
+    /* Sombra sutil de foco */
 }
 
 /* Botón de Registro (Misma clase que el CTA de Home) */
@@ -66,7 +77,7 @@
     padding: 12px 25px;
     border: none;
     border-radius: 5px;
-    color: white; 
+    color: white;
     font-weight: bold;
     cursor: pointer;
     margin-top: 20px;
@@ -76,14 +87,16 @@
 
 /* Efecto hover (usa el color Marrón Oscuro) */
 .register-button:hover {
-    background-color: #794225 !important; /* Marrón Oscuro */
+    background-color: #794225 !important;
+    /* Marrón Oscuro */
 }
 
 /* Enlace a Iniciar Sesión */
 .login-link {
     margin-top: 20px;
     font-size: 0.9em;
-    color: #A0522D; /* Texto principal en Marrón Cacao */
+    color: #A0522D;
+    /* Texto principal en Marrón Cacao */
 }
 
 .login-link a {
@@ -93,7 +106,8 @@
 
 .login-link a:hover {
     text-decoration: underline;
-    color: #794225 !important; /* Marrón Oscuro al hacer hover */
+    color: #794225 !important;
+    /* Marrón Oscuro al hacer hover */
 }
 
 /* Agrega estos estilos al final de tu register-component.css */
@@ -102,7 +116,8 @@
     text-align: left;
     margin-top: 25px;
     margin-bottom: 15px;
-    border-bottom: 2px solid #EEDCB3; /* Línea separadora suave */
+    border-bottom: 2px solid #EEDCB3;
+    /* Línea separadora suave */
     padding-bottom: 5px;
 }
 
@@ -113,8 +128,10 @@
     gap: 15px;
 }
 
-.date-group, .cvv-group {
-    flex: 1; /* Distribuye el espacio de manera uniforme */
+.date-group,
+.cvv-group {
+    flex: 1;
+    /* Distribuye el espacio de manera uniforme */
 }
 
 /* Estilo para mensajes de error */

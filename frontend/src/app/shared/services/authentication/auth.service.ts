@@ -1,23 +1,46 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { map, Observable, tap } from 'rxjs';
+
+const BASE_URL = 'http://localhost:3000/api/auth';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
   private httpClient = inject(HttpClient);
 
-    //register(user: any):Observable<any>{
-      //return this.httpClient.post("http://localhost:3000/register", user);
-      //}
+  constructor(private router: Router) {
+  const token = localStorage.getItem('token');
 
-    //login(user: any): Observable<any> {
-      //return this.httpClient.post("http://localhost:3000/login", user);
-        //}
+  if (token) {
+    this.isAuthenticated.set(true);
+  }
+}
+
+  isAuthenticated = signal(false);
+
+  register(user: any): Observable<any> {
+    return this.httpClient.post(`${BASE_URL}/register`, user);
+  }
+
+  login(username: string, password: string): Observable<any> {
+    return this.httpClient.post(`${BASE_URL}/login`, { username, password }).pipe(
+      tap((response: any) => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+        }
+        this.isAuthenticated.set(true);
+      })
+    );
+  }
 
   cerrarSesion(): void {
+    this.isAuthenticated.set(false);
     localStorage.clear();
+    this.router.navigate(['/login']);
   }
 
 }

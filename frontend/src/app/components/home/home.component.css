@@ -1,15 +1,11 @@
-/* home.component.css */
 
-/* Estilos para el banner principal */
 .hero-section {
     padding: 80px 50px;
     display: flex;
     align-items: center;
     justify-content: space-around;
     color: var(--color-primario);
-    /* Marrón Cacao para el texto */
     background-color: #F5F5DC;
-    /* Fondo Crema Suave */
 }
 
 .hero-content {
@@ -19,21 +15,14 @@
 
 .hero-content h1 {
     font-size: 2.5em;
-    margin-bottom: 10px;
-    font-weight: 700;
+    margin-bottom: 12px;
 }
 
-.hero-content p {
-    font-size: 1.1em;
-    line-height: 1.6;
-}
-
-/* Estilos para las tarjetas de funcionalidades */
 .features-section {
     padding: 50px 50px;
     text-align: center;
     background-color: var(--color-secundario);
-    /* Fondo Arena Cálida */
+    padding-bottom: 7.88em;
 }
 
 .features-section h2 {
@@ -58,7 +47,6 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #F5F5DC;
-    /* Fondo Crema Suave */
     color: var(--color-primario);
     text-align: left;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
