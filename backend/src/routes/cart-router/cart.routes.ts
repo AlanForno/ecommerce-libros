@@ -3,7 +3,7 @@ import { CartController } from "../../controllers/cart.controller.js";
 
 const router = Router();
 
-router.get('/', CartController.getCart);
+router.get('/:userId', CartController.getCart);
 
 router.post('/add', CartController.addToCart); 
 
