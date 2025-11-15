@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\prisma",
+    "\\frontend",
+    "\\prisma"
+  ],
+  "SelectedNode": "\\prisma.config.ts",
+  "PreviewInSolutionExplorer": false
+}
