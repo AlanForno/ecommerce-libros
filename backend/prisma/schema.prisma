@@ -22,6 +22,7 @@ model book {
   ruta_imagen String?  @db.VarChar(200)
   valoracion  Decimal? @db.Decimal(2, 1)
   cart        cart[]
+  library     Library[]
 }
 
 model cart {
@@ -30,23 +31,9 @@ model cart {
   bookId   Int
   quantity Int  @default(1)
   book     book @relation(fields: [bookId], references: [id])
-  user     user @relation(fields: [userId], references: [id])
+  user     User @relation(fields: [userId], references: [id])
 
   @@unique([userId, bookId])
-}
-
-model user {
-  id       Int    @id @default(autoincrement())
-  nombre   String
-  email    String @unique
-  password String
-  cart     cart[]
-  anio        String?   @db.VarChar(4)
-  genero      String?   @db.VarChar(100)
-  precio      Decimal?  @db.Decimal(10, 2)
-  ruta_imagen String?   @db.VarChar(200)
-  valoracion  Decimal?  @db.Decimal(2, 1)
-  library     Library[]
 }
 
 model Library {
@@ -71,6 +58,7 @@ model User {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
   library       Library[]
+  cart          cart[]
 
   @@map("users")
 }
