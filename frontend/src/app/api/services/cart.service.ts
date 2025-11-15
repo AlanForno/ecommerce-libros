@@ -28,16 +28,20 @@ export class CartService {
    * Agrega un libro al carrito del usuario
    * @param bookId id del libro a agregar
    */
-  addToCart(bookId: number): Observable<any> {
-    return this.http.post(`${enviroments.api_url}/cart`, { bookId });
-  }
-  
+  addToCart(userId: number, bookId: number, quantity: number): Observable<any> {
+      const body = { userId, bookId, quantity };
+      return this.http.post(`${enviroments.api_url}/cart/add`, body);
+    }
+
   /**
    * Elimina un libro del carrito
+   * @param userId id del usuario
    * @param bookId id del libro a eliminar
    */
-  removeFromCart(bookId: number): Observable<void> {
-    return this.http.delete<void>(`${enviroments.api_url}/cart/item/${bookId}`);
+  removeFromCart(userId: number, bookId: number): Observable<void> {
+    return this.http.delete<void>(`${enviroments.api_url}/cart/remove`, {
+        params: { userId: userId.toString(), bookId: bookId.toString() }
+    });
   }
 
   /**
@@ -45,6 +49,8 @@ export class CartService {
    * @param userId id del usuario logueado
    */
   clearCart(userId: number): Observable<void> {
-    return this.http.delete<void>(`${enviroments.api_url}/cart/${userId}`);
+    return this.http.delete<void>(`${enviroments.api_url}/cart/clear`, {
+        params: { userId: userId.toString() }
+    });
   }
 }

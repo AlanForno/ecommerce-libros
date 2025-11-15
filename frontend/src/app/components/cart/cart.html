@@ -2,6 +2,8 @@
   <div class="cart-container">
     <h2>Tu carrito de compras</h2>
 
+    <p class="user-id-display">🛒 Carrito del Usuario ID: <strong>{{ userId }}</strong></p>
+
     <ul class="cart-list">
       @for (book of cartItems; track book.id) {
         <li>

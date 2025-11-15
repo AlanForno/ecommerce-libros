@@ -3,9 +3,9 @@ import { CartController } from "../../controllers/cart.controller.js";
 
 const router = Router();
 
-router.get('/', CartController.getCart);
+router.get('/:userId', CartController.getCart);
 
-router.post('/', CartController.addToCart);
+router.post('/add', CartController.addToCart); 
 
 router.delete('/:id', CartController.removeFromCart);
 
