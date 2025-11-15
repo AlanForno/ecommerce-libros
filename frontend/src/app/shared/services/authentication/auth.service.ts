@@ -26,21 +26,31 @@ export class AuthService {
     return this.httpClient.post(`${BASE_URL}/register`, user);
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.httpClient.post(`${BASE_URL}/login`, { username, password }).pipe(
-      tap((response: any) => {
-        if (response.token) {
-          localStorage.setItem('token', response.token);
-        }
-        this.isAuthenticated.set(true);
-      })
-    );
-  }
+    login(username: string, password: string): Observable<any> {
+      return this.httpClient.post(`${BASE_URL}/login`, { username, password }).pipe(
+        tap((response: any) => {
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+          }
+          
+          if (response.userId) { 
+            localStorage.setItem('userId', response.userId); 
+          }
+
+          this.isAuthenticated.set(true);
+        })
+      );
+    }
 
   cerrarSesion(): void {
     this.isAuthenticated.set(false);
     localStorage.clear();
     this.router.navigate(['/login']);
+  }
+
+  public getUsuarioId(): number | null {
+    const userId = localStorage.getItem('userId');
+    return userId ? Number(userId) : null;
   }
 
 }

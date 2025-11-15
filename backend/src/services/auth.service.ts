@@ -53,7 +53,7 @@ export class AuthService {
     /**
      * Lógica de Login de usuario.
      */
-    async login(loginData: LoginBodyDto): Promise<{ token: string }> {
+ async login(loginData: LoginBodyDto): Promise<{ token: string, userId: number }> { // <- CAMBIO AQUÍ
         
         const { username, password } = loginData;
         const user = await this.userRepository.findByUsername(username);
@@ -76,6 +76,10 @@ export class AuthService {
             { expiresIn: '1h' }
         );
 
-        return { token };
+        // ANTES:
+        // return { token };
+
+        // DESPUÉS:
+        return { token, userId: user.id }; // <- CAMBIO AQUÍ
     }
 }

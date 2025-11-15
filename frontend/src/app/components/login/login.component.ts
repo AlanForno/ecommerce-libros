@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   errorMessage = signal<string | null>(null);
   status = signal<'idle' | 'loading' | 'success' | 'error'>('idle')
 
+
   onLogin(): void {
     this.status.set('loading');
     this.errorMessage.set(null);
@@ -33,12 +34,31 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+
     this.authService.login(user, pass).subscribe({
       next: (response) => {
         console.log('Respuesta del servidor:', response);
         this.status.set('success');
         this.router.navigate(['/catalogo']);
       },
+
+ 
+    //this.authService.login(user, pass).subscribe({
+      //next: (isAuthenticated) => {
+        //if (isAuthenticated) {
+          //console.log('¡Inicio de sesión exitoso!');
+          //this.status.set('success');
+          // Aquí navegarías a otra página, por ejemplo:
+          // this.router.navigate(['/detalle']);
+          //alert('¡Inicio de sesión exitoso!'); // Simulación de navegación
+        //}
+      //},
+      //error: (errorMsg) => {
+        //console.error('Error en el inicio de sesión:', errorMsg);
+        //this.errorMessage.set(errorMsg);
+        //this.status.set('error');
+      //}
+    //});
 
       error: (err) => {
         console.error('Error en el inicio de sesión:', err);
@@ -52,5 +72,6 @@ export class LoginComponent implements OnInit {
         this.status.set('error');
       }
     });
+
   }
 }

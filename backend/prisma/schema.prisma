@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,12 +9,12 @@ datasource db {
 }
 
 model book {
-  id          Int      @id @default(autoincrement())
-  titulo      String?  @db.VarChar(200)
-  autor       String?  @db.VarChar(180)
-  editorial   String?  @db.VarChar(180)
+  id          Int       @id @default(autoincrement())
+  titulo      String?   @db.VarChar(200)
+  autor       String?   @db.VarChar(180)
+  editorial   String?   @db.VarChar(180)
   descripcion String?
-  formato     String?  @db.VarChar(80)
+  formato     String?   @db.VarChar(80)
   paginas     Int?
   anio        String?  @db.VarChar(4)
   genero      String?  @db.VarChar(100)
@@ -40,18 +41,36 @@ model user {
   email    String @unique
   password String
   cart     cart[]
+  anio        String?   @db.VarChar(4)
+  genero      String?   @db.VarChar(100)
+  precio      Decimal?  @db.Decimal(10, 2)
+  ruta_imagen String?   @db.VarChar(200)
+  valoracion  Decimal?  @db.Decimal(2, 1)
+  library     Library[]
+}
+
+model Library {
+  id        Int      @id @default(autoincrement())
+  usuarioId Int     
+  bookId    Int
+  fecha     DateTime @default(now())
+  book      book     @relation(fields: [bookId], references: [id])
+  usuario   User     @relation(fields: [usuarioId], references: [id])
+  @@unique([usuarioId, bookId])
+  @@map("library") 
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
-  name            String   @db.VarChar(20)
-  surname         String   @unique @db.VarChar(20)
-  username        String   @unique @db.VarChar(20)
-  email           String   @unique @db.VarChar(255)
-  password        String   @db.VarChar(255)
-  paymentInfoId   String   @db.VarChar(255)
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(20)
+  surname       String   @unique @db.VarChar(20)
+  username      String   @unique @db.VarChar(20)
+  email         String   @unique @db.VarChar(255)
+  password      String   @db.VarChar(255)
+  paymentInfoId String   @db.VarChar(255) @map("paymentinfoid")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  library       Library[]
 
   @@map("users")
 }

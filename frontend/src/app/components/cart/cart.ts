@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { CartService } from '../../api/services/cart.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { LibraryService } from '../../api/services/library.service';
+import { AuthService } from '../../shared/services/authentication/auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -15,9 +18,12 @@ export class CartComponent implements OnInit {
   cartService = inject(CartService);
   private router = inject(Router);
 
+  libraryService = inject(LibraryService);
+  authService = inject(AuthService);
   cartItems: any[] = [];
   total: number = 0;
-  userId: number = 1; //simular id de usuario
+
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadCart();
@@ -38,12 +44,12 @@ export class CartComponent implements OnInit {
       error: (err) => console.error('Error cargando carrito', err)
     });
   }
-
   calculateTotal(): void {
     this.total = this.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   }
 
   removeFromCart(bookId: number): void {
+      const userId = this.authService.getUsuarioId();
       this.cartService.removeFromCart(this.userId, bookId).subscribe({
           next: () => {
             this.cartItems = this.cartItems.filter(book => book.id !== bookId);
@@ -67,6 +73,7 @@ export class CartComponent implements OnInit {
         alert('El carrito está vacío. Agrega libros para finalizar la compra.');
         return;
     }
+    const userId = this.authService.getUsuarioId();
 
     this.cartService.clearCart(this.userId).subscribe({
       next: () => {
@@ -87,4 +94,29 @@ export class CartComponent implements OnInit {
       }
     });
   }
+
+finalizarCompra(books: any[]): void {
+  this.saveBooks(books);
+  this.router.navigate(['/library']);
+}
+
+saveBooks(books: any[]): void {
+    const userId = this.authService.getUsuarioId();
+
+    if (!userId) {
+      return;
+    }
+    for (let book of books) {
+      this.libraryService.addBook(userId, book.id).subscribe({
+        next: (response) => {
+        },
+        error: (err) => {
+        }
+      });
+    }
+  }
+
+
+}
+
 }

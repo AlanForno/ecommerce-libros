@@ -1,23 +1,41 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../shared/services/authentication/auth.service';
+import { LibraryService } from '../../api/services/library.service';
+import { Book, BookPreview } from '../../shared/interfaces/book';
+
 @Component({
   selector: 'app-library',
-  standalone: true, 
+  standalone: true,
   templateUrl: './library.html',
   styleUrls: ['./library.css'],
-  imports: [CommonModule] 
+  imports: [CommonModule],
 })
-export class LibraryComponent {
-  books = [
-    { id: '1', title: 'Libro 1', author: 'Autor 1', price: 10 },
-    { id: '2', title: 'Libro 2', author: 'Autor 2', price: 15 },
-    { id: '3', title: 'Libro 3', author: 'Autor 3', price: 20 }
-  ];
- 
-  loading = false;           
-  error: string | null = null; 
-  constructor() {
-    console.log('Biblioteca cargada');
+export class LibraryComponent implements OnInit {
+  authService = inject(AuthService);
+  libraryService = inject(LibraryService);
+  books: BookPreview[] = [];
+  errorMessage: string = '';
+
+  ngOnInit(): void {
+    this.getCatalog();
+  
+  }
+
+  getCatalog() {
+    const userId = this.authService.getUsuarioId();
+    if (!userId) {
+      return;
+    }
+    this.libraryService.getLibrary(userId).subscribe({
+      next: (books) => {
+        this.books = books;
+        console.log('Respuesta recibida (next): Libros en la biblioteca:', this.books);
+      },
+      error: (err) => {
+        this.errorMessage = 'No se puedo cargar la biblioteca.';
+      },
+    });
   }
 }
- 

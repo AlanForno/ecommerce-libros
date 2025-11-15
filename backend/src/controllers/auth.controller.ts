@@ -36,13 +36,17 @@ export class AuthController {
   /**
    * Maneja la petición de login.
    */
-  public login = async (req: LoginRequest, res: Response): Promise<Response> => {
+ public login = async (req: LoginRequest, res: Response): Promise<Response> => {
     try {
-      const { token } = await this.authService.login(req.body);
-      return res.status(200).json({
+
+      const { token, userId } = await this.authService.login(req.body); 
+     
+      return res.status(200).json({ 
         message: 'Login exitoso.',
         token: token,
+        userId: userId 
       });
+
     } catch (error: any) {
       if (error.message.includes('inválidas')) {
         return res.status(401).json({ error: error.message });

@@ -13,3 +13,17 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model book {
+  id          Int      @id @default(autoincrement())
+  titulo      String?  @db.VarChar(200)
+  autor       String?  @db.VarChar(180)
+  editorial   String?  @db.VarChar(180)
+  descripcion String?
+  formato     String?  @db.VarChar(80)
+  paginas     Int?
+  anio        String?  @db.VarChar(4)
+  genero      String?  @db.VarChar(100)
+  precio      Decimal? @db.Decimal(10, 2)
+  ruta_imagen String?  @db.VarChar(200)
+  valoracion  Decimal? @db.Decimal(2, 1)
+}
