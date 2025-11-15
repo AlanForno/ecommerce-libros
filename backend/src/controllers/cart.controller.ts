@@ -6,13 +6,12 @@ const cartRepository = new CartRepository();
 
 const cartService = new CartService(cartRepository); 
 
-const FAKE_USER_ID = 1; // ID de usuario temporal (debe ser reemplazado por la sesión)
-
 export class CartController {
   
   static async getCart(request: Request, response: Response) {
     try {
-      const cartItems = await cartService.getCart(FAKE_USER_ID); 
+      const userId = Number(request.params.userId);
+      const cartItems = await cartService.getCart(userId); 
       response.json(cartItems);
     } catch (error) {
       response.status(500).json({ message: "Error al obtener el carrito." });
@@ -28,7 +27,8 @@ export class CartController {
     }
 
     try {
-          const addedItem = await cartService.addToCart(FAKE_USER_ID, bookId, quantity);
+      const userId = Number(request.body.userId);
+          const addedItem = await cartService.addToCart(userId, bookId, quantity);
 
           response.status(201).json(addedItem);
         } catch (error) { 
@@ -51,10 +51,11 @@ export class CartController {
   
   static async removeFromCart(request: Request, response: Response) {
     const bookId = Number(request.params.id);
+    const userId = Number(request.query.userId);
     
     try {
-      await cartService.removeFromCart(FAKE_USER_ID, bookId);
-      const updatedCart = await cartService.getCart(FAKE_USER_ID);
+      await cartService.removeFromCart(userId, bookId);
+      const updatedCart = await cartService.getCart(userId);
       response.json(updatedCart);
     } catch (error) {
        response.status(500).json({ message: "Error al eliminar el item." });
@@ -63,7 +64,8 @@ export class CartController {
 
   static async clearCart(request: Request, response: Response) {
     try {
-      await cartService.clearCart(FAKE_USER_ID);
+      const userId = Number(request.query.userId);
+      await cartService.clearCart(userId);
       response.json({ message: "Carrito vaciado correctamente" });
     } catch (error) {
       response.status(500).json({ message: "Error al vaciar el carrito." });

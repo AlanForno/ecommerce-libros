@@ -21,7 +21,7 @@ export class CartRepository {
 
   async addBookToCart(userId: number, bookId: number, quantity: number = 1): Promise<CartItem> {
       const existingItem = await prisma.cart.findFirst({
-        where: { userId: userId, bookId: bookId },
+        where: { userId: {equals: userId}, bookId: bookId },
         include: { book: true },
       });
 
