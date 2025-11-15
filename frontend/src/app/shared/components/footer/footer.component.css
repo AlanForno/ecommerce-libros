@@ -1,38 +1,60 @@
 .app-footer {
-    padding: 30px 40px;
-    margin-top: auto;
-    /* Empuja el footer hacia abajo */
-    border-top: 1px solid rgba(160, 82, 45, 0.2);
-    font-size: 0.9em;
+  padding: 30px 40px;
+  margin-top: auto;
+  border-top: 1px solid rgba(160, 82, 45, 0.2);
+  font-size: 0.9em;
+  background-color: #fdfaf5;
 }
 
 .footer-content {
-    display: flex;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; 
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px; 
 }
 
 .footer-section {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+  flex: 1; 
 }
 
 .footer-section h4 {
-    margin-bottom: 10px;
-    font-size: 1.1em;
-    color: var(--color-primario-oscuro);
-    /* Un marrón más oscuro */
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: var(--color-primario);
+  font-weight: 700;
 }
 
 .footer-section a,
 .footer-section p {
-    text-decoration: none;
-    color: var(--color-primario);
-    transition: color 0.3s;
+  text-decoration: none;
+  color: var(--color-primario);
+  transition: color 0.3s;
+  margin: 0;
 }
 
 .footer-section a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
+}
+
+/* --- RESPONSIVE --- */
+@media screen and (max-width: 768px) {
+  .app-footer {
+    padding: 30px 20px; 
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 30px; 
+  }
+
+  .footer-section {
+    text-align: center;
+    align-items: center;
+  }
 }
