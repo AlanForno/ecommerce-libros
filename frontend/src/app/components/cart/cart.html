@@ -18,7 +18,7 @@
     </ul>
 
     <div class="cart-summary">
-      <p>Total: <strong>${{ total }}</strong></p>
+     <p>Total: <strong>{{ total | currency:'ARS' }}</strong></p>
       <button (click)="checkout()">Finalizar compra</button>
     </div>
   </div>

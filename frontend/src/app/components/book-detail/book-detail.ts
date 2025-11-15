@@ -19,7 +19,7 @@ export class BookDetail implements OnInit, OnDestroy {
   id:number=0;
   book!:Book;
 
-  private readonly currentUserId = 1; //simulo ID de usuario
+  private readonly currentUserId = 1;
 
   ngOnInit(): void {
     this.id = Number(this.activatedRouter.snapshot.paramMap.get('id'));
@@ -41,7 +41,7 @@ export class BookDetail implements OnInit, OnDestroy {
   addToCart(book: Book): void {
     const bookId = book.id;
     const userId = this.currentUserId;
-    const quantity = 1; // Fijo por regla de EPUB
+    const quantity = 1; 
 
     this.cartService.addToCart(userId, bookId, quantity).subscribe({
       next: (response) => {
@@ -71,13 +71,12 @@ buyNow(book: Book): void {
                     next: () => {
                         alert('🎉 ¡Pago exitoso! Disfruta de tu nuevo EPUB.');
                     },
-                    error: () => { /* Manejo de error de clearCart */ }
+                    error: () => { }
                 });
-            }, 500); // Simula un pequeño tiempo de procesamiento
+            }, 500); 
         },
         error: (err) => {
             if (err.status === 409) {
-                // Si ya está en el carrito (Regla EPUB), sigue con el checkout
                  setTimeout(() => {
                     this.cartService.clearCart(userId).subscribe({
                         next: () => {
