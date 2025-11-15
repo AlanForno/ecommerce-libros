@@ -21,8 +21,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
   filtros: FormGroup;
   filtrosPantallaGenero: string = '';
 
-  currentUserId: number = 1; //simular usuario
-
   constructor(private fb: FormBuilder) {
     this.filtros = this.fb.group({
       busqueda: [''],
@@ -128,7 +126,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   addToCart(book: BookPreview): void {
       this.cartService.addToCart(
-        this.currentUserId, //cambiar por userId luego
+        this.userId,
         book.id,
         1
       ).subscribe({
