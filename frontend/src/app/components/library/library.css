@@ -1,11 +1,33 @@
 .library {
   padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.library h2 {
+  font-size: 2.2em;
+  font-weight: 700;
+  color: var(--color-primario);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--color-secundario);
+} 
+
+.error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  text-align: center;
+  font-weight: bold;
 }
 
 .book-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
 
 .book {
@@ -13,9 +35,76 @@
   padding: 12px;
   border-radius: 8px;
   background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.error {
-  color: red;
-  font-weight: bold;
+.book:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.book h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--color-primario);
+}
+
+.book p {
+  font-size: 0.95em;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.book p:last-of-type {
+  margin-bottom: 15px;
+}
+
+.book .cta-button {
+  align-self: flex-start;
+  padding: 8px 12px;
+  background-color: var(--color-primario);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  margin-top: auto;
+}
+
+.book .cta-button:hover {
+  background-color: var(--color-secundario);
+}
+
+/* Responsive */
+
+@media screen and (max-width: 1280px) {
+  .book-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .book-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .book-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .book-list {
+    /* En móvil, volvemos a una sola columna */
+    grid-template-columns: 1fr;
+  }
 }

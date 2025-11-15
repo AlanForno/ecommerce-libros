@@ -16,12 +16,14 @@
   margin-bottom: 12px;
   border-bottom: 1px solid #ccc;
   padding-bottom: 10px;
+  gap: 15px; /* Añadido para dar espacio */
 }
 
 .book-info {
   flex-grow: 1;
 }
 
+/* Estilo general para botones en el carrito */
 button {
   background-color: #e74c3c;
   color: white;
@@ -29,6 +31,8 @@ button {
   padding: 6px 12px;
   cursor: pointer;
   border-radius: 4px;
+  transition: background-color 0.3s;
+  flex-shrink: 0; /* Evita que el botón se encoja */
 }
 
 button:hover {
@@ -38,4 +42,41 @@ button:hover {
 .cart-summary {
   margin-top: 20px;
   text-align: right;
+}
+
+/* Botón de finalizar compra (si lo tienes) */
+.checkout-button {
+  background-color: #A0522D; /* Color primario de tu tienda */
+  padding: 10px 20px;
+  font-size: 1.1em;
+}
+.checkout-button:hover {
+  background-color: #794225;
+}
+
+
+/* --- RESPONSIVE - MÓVIL --- */
+@media screen and (max-width: 576px) {
+  .cart-list li {
+    /* Apilamos el botón debajo de la info */
+    flex-direction: column;
+    align-items: stretch; /* Hacemos que todo ocupe el ancho */
+  }
+
+  .book-info {
+    text-align: center; /* Centramos la info */
+  }
+
+  button {
+    width: 100%; /* El botón ocupa todo el ancho */
+    padding: 10px;
+  }
+
+  .cart-summary {
+    text-align: center; /* Centramos el resumen */
+  }
+
+  .checkout-button {
+    width: 100%; /* El botón ocupa todo el ancho */
+  }
 }

@@ -1,3 +1,7 @@
+.main-catalogo-layout {
+    flex-direction: row;
+}
+
 .tag-busqueda {
     font-family: inherit; 
     font-size: 1.15em;
@@ -11,6 +15,8 @@
     padding: 20px 10px;
     background-color: var(--color-secundario);
     border-radius: 8px;
+    align-self: flex-start;
+    max-width: 350px;
 }
 
 .filtros ul li {
@@ -45,6 +51,16 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
+}
+
+@media screen and (max-width: 992px) {
+  .main-catalogo-layout {
+    flex-direction: column; 
+  }
+    .filtros {
+        width: 100%; 
+        max-width: none; 
+    }
 }
 
 @media screen and (max-width: 1280px) {
