@@ -20,6 +20,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   filtros: FormGroup;
   filtrosPantallaGenero: string = '';
+  userId?: number;
 
   constructor(private fb: FormBuilder) {
     this.filtros = this.fb.group({
@@ -34,6 +35,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const filtrosAlmacenados = localStorage.getItem('filtros_catalogo');
+    if (localStorage.getItem('userId'))
+      this.userId = Number(localStorage.getItem('userId'));
 
     if (filtrosAlmacenados) {
       const filtros = JSON.parse(filtrosAlmacenados);
@@ -126,7 +129,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   addToCart(book: BookPreview): void {
       this.cartService.addToCart(
-        this.userId,
+        this.userId!,
         book.id,
         1
       ).subscribe({

@@ -35,7 +35,7 @@ export class CartComponent implements OnInit {
       console.warn('Usuario no autenticado. No se puede cargar el carrito.');
       return;
     }
-
+    
     this.cartService.getCart(this.userId!).subscribe({
       next: (data) => {
         this.cartItems = data.map(item => ({
